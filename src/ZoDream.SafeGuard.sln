@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33606.364
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoDream.SafeGuard", "ZoDream.SafeGuard\ZoDream.SafeGuard.csproj", "{0200F1CF-F33F-49D8-B440-1DAF720207E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoDream.Shared", "..\shared\ZoDream.Shared\ZoDream.Shared.csproj", "{D5ABF42C-6A45-416D-B64D-2ECBA198081D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoDream.Shared.Controls", "..\shared\ZoDream.Shared.Controls\ZoDream.Shared.Controls.csproj", "{E052D38B-38CC-4F2B-A36D-9C366C08164B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0200F1CF-F33F-49D8-B440-1DAF720207E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0200F1CF-F33F-49D8-B440-1DAF720207E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0200F1CF-F33F-49D8-B440-1DAF720207E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0200F1CF-F33F-49D8-B440-1DAF720207E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5ABF42C-6A45-416D-B64D-2ECBA198081D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5ABF42C-6A45-416D-B64D-2ECBA198081D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5ABF42C-6A45-416D-B64D-2ECBA198081D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5ABF42C-6A45-416D-B64D-2ECBA198081D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E052D38B-38CC-4F2B-A36D-9C366C08164B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E052D38B-38CC-4F2B-A36D-9C366C08164B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E052D38B-38CC-4F2B-A36D-9C366C08164B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E052D38B-38CC-4F2B-A36D-9C366C08164B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {84A3D35B-EE75-4B2F-8C36-2900D94A547F}
+	EndGlobalSection
+EndGlobal
