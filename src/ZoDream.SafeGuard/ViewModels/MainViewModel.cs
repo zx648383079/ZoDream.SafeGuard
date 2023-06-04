@@ -19,6 +19,7 @@ namespace ZoDream.SafeGuard.ViewModels
             ScanCommand = new RelayCommand(TapScan);
             TrainCommand = new RelayCommand(TapTrain);
             SettingCommand = new RelayCommand(TapSetting);
+            VulnCommand = new RelayCommand(TapVuln);
         }
 
         private bool isHome = true;
@@ -33,9 +34,17 @@ namespace ZoDream.SafeGuard.ViewModels
         public ICommand TrainCommand { get; private set; }
         public ICommand SettingCommand { get; private set; }
 
+        public ICommand VulnCommand { get; private set; }
+
         private void TapHome(object? _)
         {
             IsHome = true;
+        }
+
+        private void TapVuln(object? _)
+        {
+            IsHome = false;
+            ShellManager.GoToAsync("vuln");
         }
 
         private void TapScan(object? _)

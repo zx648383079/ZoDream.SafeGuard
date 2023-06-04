@@ -27,6 +27,7 @@ namespace ZoDream.SafeGuard
             InitializeComponent();
             ShellManager.RegisterRoute("scan", typeof(ScanPage));
             ShellManager.RegisterRoute("train", typeof(TrainPage));
+            ShellManager.RegisterRoute("vuln", typeof(VulnerabilityPage));
             ShellManager.RegisterRoute("setting", typeof(SettingPage));
         }
 

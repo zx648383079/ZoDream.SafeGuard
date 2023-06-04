@@ -26,8 +26,8 @@
             <StackPanel Orientation="Horizontal" Style="{StaticResource PrimaryPanel}">
                 <sctl:IconButton Icon="&#xE10F;" Label="主页" Command="{Binding HomeCommand}" Style="{StaticResource TopLargeIcon}"/>
                 <sctl:IconButton Icon="&#xE773;" Label="病毒查找" Command="{Binding ScanCommand}" Style="{StaticResource TopLargeIcon}"/>
-                <sctl:IconButton Icon="&#xE7C9;" Label="病毒训练" Command="{Binding TrainCommand}" Style="{StaticResource TopLargeIcon}"/>
-                <sctl:IconButton Icon="&#xE72E;" Label="加密" Style="{StaticResource TopLargeIcon}"/>
+                <sctl:IconButton Icon="&#xE7C9;" Label="AI训练" Command="{Binding TrainCommand}" Style="{StaticResource TopLargeIcon}"/>
+                <sctl:IconButton Icon="&#xEE65;" Label="漏洞扫描" Command="{Binding VulnCommand}" Style="{StaticResource TopLargeIcon}"/>
                 <sctl:IconButton Icon="&#xE115;" Label="设置" Command="{Binding SettingCommand}" Style="{StaticResource TopLargeIcon}"/>
             </StackPanel>
             <Grid Grid.Row="1" Style="{StaticResource BodyPanel}">
@@ -45,8 +45,8 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <sctl:IconButton Icon="&#xE773;" Label="病毒查找" Command="{Binding ScanCommand}" Style="{StaticResource LargeIcon}"/>
-                <sctl:IconButton Icon="&#xE72E;" Label="加密" Grid.Row="1" Style="{StaticResource LargeIcon}"/>
-                <sctl:IconButton Icon="&#xE7C9;" Label="病毒训练" Command="{Binding TrainCommand}" Grid.Column="1" Style="{StaticResource LargeIcon}"/>
+                <sctl:IconButton Icon="&#xEE65;" Label="漏洞扫描" Command="{Binding VulnCommand}" Grid.Row="1" Style="{StaticResource LargeIcon}"/>
+                <sctl:IconButton Icon="&#xE7C9;" Label="AI训练" Command="{Binding TrainCommand}" Grid.Column="1" Style="{StaticResource LargeIcon}"/>
                 <sctl:IconButton Icon="&#xE115;" Label="设置" Command="{Binding SettingCommand}" Grid.Column="1" Grid.Row="1" Style="{StaticResource LargeIcon}"/>
             </Grid>
         </Grid>
