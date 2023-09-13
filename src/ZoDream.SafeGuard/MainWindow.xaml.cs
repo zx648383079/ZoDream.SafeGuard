@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ZoDream.SafeGuard.Pages;
-using ZoDream.SafeGuard.Routes;
+using ZoDream.Shared.Routes;
 
 namespace ZoDream.SafeGuard
 {
@@ -28,6 +28,8 @@ namespace ZoDream.SafeGuard
             ShellManager.RegisterRoute("scan", typeof(ScanPage));
             ShellManager.RegisterRoute("train", typeof(TrainPage));
             ShellManager.RegisterRoute("vuln", typeof(VulnerabilityPage));
+            ShellManager.RegisterRoute("tool", typeof(ToolPage));
+            ShellManager.RegisterRoute("tool/finder", typeof(FinderPage));
             ShellManager.RegisterRoute("setting", typeof(SettingPage));
         }
 

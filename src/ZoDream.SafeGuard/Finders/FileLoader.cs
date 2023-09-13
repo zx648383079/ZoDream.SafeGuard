@@ -13,7 +13,7 @@ namespace ZoDream.SafeGuard.Finders
     {
         public FileInfo File { get; private set; }
 
-        public FileStatus Status { get; set; } = FileStatus.Normal;
+        public FileCheckStatus Status { get; set; } = FileCheckStatus.Normal;
 
         public long Length => File.Length;
         public string Name => File.Name;

@@ -7,8 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using ZoDream.SafeGuard.Finders;
 
-namespace ZoDream.SafeGuard.Finders.Filters
+namespace ZoDream.SafeGuard.Plugins.Filters
 {
     public class SomeSameFileFilter : BaseFileFilter, IDisposable
     {
@@ -30,7 +31,8 @@ namespace ZoDream.SafeGuard.Finders.Filters
                     _exampleItems.Add(new FileLoader(info));
                     continue;
                 }
-                FileLoader.EachFiles(new DirectoryInfo(item), data => {
+                FileLoader.EachFiles(new DirectoryInfo(item), data =>
+                {
                     _exampleItems.Add(new FileLoader(data));
                 });
             }
@@ -65,7 +67,8 @@ namespace ZoDream.SafeGuard.Finders.Filters
                 FileEigenvalues[i].Init();
                 checkItems.Add(FileEigenvalues[i]);
             }
-            if (checkItems.Count == 0) {
+            if (checkItems.Count == 0)
+            {
                 return false;
             }
             if (token.IsCancellationRequested)
@@ -73,7 +76,8 @@ namespace ZoDream.SafeGuard.Finders.Filters
                 return false;
             }
             var success = false;
-            EachLine(fileInfo.Reader, line => {
+            EachLine(fileInfo.Reader, line =>
+            {
                 if (token.IsCancellationRequested)
                 {
                     return false;
@@ -101,7 +105,7 @@ namespace ZoDream.SafeGuard.Finders.Filters
 
         protected bool ValidFile(FileLoader example, FileLoader file)
         {
-            
+
             var exampleReader = example.Reader;
             var fileReader = file.Reader;
             exampleReader.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -181,9 +185,9 @@ namespace ZoDream.SafeGuard.Finders.Filters
                 return true;
             }
 
-            public FileEigenvalue(FileLoader file): this(file.Reader)
+            public FileEigenvalue(FileLoader file) : this(file.Reader)
             {
-                
+
             }
 
             public FileEigenvalue(StreamReader reader)
@@ -191,7 +195,8 @@ namespace ZoDream.SafeGuard.Finders.Filters
                 var md5 = MD5.Create();
                 var lastLine = string.Empty;
                 var output = new byte[1024 * 1024];
-                EachLine(reader, line => {
+                EachLine(reader, line =>
+                {
                     lastLine = line;
                     Length += line.Length;
                     if (string.IsNullOrEmpty(Start))

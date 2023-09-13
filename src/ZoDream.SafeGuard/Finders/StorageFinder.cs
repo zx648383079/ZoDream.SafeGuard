@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using ZoDream.SafeGuard.Finders.Filters;
 
 namespace ZoDream.SafeGuard.Finders
 {
-    public class StorageFinder
+    public abstract class StorageFinder
     {
         private CancellationTokenSource? _cancelTokenSource;
-
-        public IList<IFileFilter>? FilterItems { get; set; } = new List<IFileFilter>();
 
         public event FinderLogEventHandler? FileChanged;
 
@@ -102,30 +99,17 @@ namespace ZoDream.SafeGuard.Finders
                 return;
             }
             FoundChanged?.Invoke(file);
+            ProcessFile(file, token);
         }
 
-        private bool IsValidFile(FileInfo fileInfo, CancellationToken token = default)
+        protected abstract bool IsValidFile(FileInfo fileInfo, CancellationToken token = default);
+
+        protected virtual Task ProcessFile(FileInfo fileInfo, CancellationToken token = default)
         {
-            if (FilterItems == null || FilterItems.Count == 0)
-            {
-                return true;
-            }
-            using var fileLoader = new FileLoader(fileInfo);
-            foreach (var item in FilterItems)
-            {
-                if (token.IsCancellationRequested)
-                {
-                    return false;
-                }
-                if (!item.Valid(fileLoader, token))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+            return Task.CompletedTask;
+        } 
 
-        private void EachFiles(string folder, 
+        private static void EachFiles(string folder, 
             Action<IEnumerable<string>> success,
             CancellationToken token = default)
         {

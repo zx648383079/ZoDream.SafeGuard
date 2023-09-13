@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ZoDream.SafeGuard.Routes
+namespace ZoDream.Shared.Routes
 {
     public static class ShellManager
     {

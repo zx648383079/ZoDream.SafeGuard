@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ZoDream.SafeGuard.Finders;
 using ZoDream.SafeGuard.Models;
 
-namespace ZoDream.SafeGuard.Finders.Filters
+namespace ZoDream.SafeGuard.Plugins
 {
     public interface IFileFilter
     {

@@ -7,6 +7,7 @@
       xmlns:vm="clr-namespace:ZoDream.SafeGuard.ViewModels"
       xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:bhv="clr-namespace:ZoDream.SafeGuard.Behaviors"
+      xmlns:mdl="clr-namespace:ZoDream.SafeGuard.Models"
       xmlns:local="clr-namespace:ZoDream.SafeGuard.Pages"
       mc:Ignorable="d" 
       x:Name="root"
@@ -238,9 +239,38 @@
                              Command="{Binding BackCommand}"/>
             <TextBlock Text="{Binding ProgressTip}" Grid.Column="1"/>
             <sctl:IconButton Icon="&#xE112;" Label="{Binding StopText}"
+                              Grid.Column="2"
                              Command="{Binding StopCommand}"/>
-            <ListView Grid.Row="1" Grid.ColumnSpan="3">
-                
+            <ListView Grid.Row="1" Grid.ColumnSpan="3"
+                       ItemsSource="{Binding CheckItems}" 
+                      HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type mdl:FileCheckItem}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="40"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding FileName}" 
+                                VerticalAlignment="Center"
+                               Foreground="Gray"
+                               Grid.Row="1"/>
+                            <TextBlock Text="{Binding Status,Converter={StaticResource StatusIconCvt}}"
+                               Foreground="{Binding Status,Converter={StaticResource StatusColorCvt}}"
+                               FontFamily="{StaticResource IconFontFamily}"
+                               Grid.Column="1"
+                               Grid.RowSpan="2"
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center"
+                               FontSize="25" FontWeight="Bold"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListView>
         </Grid>
     </Grid>

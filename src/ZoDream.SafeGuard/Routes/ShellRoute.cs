@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZoDream.SafeGuard.Routes
+namespace ZoDream.Shared.Routes
 {
     public class ShellRoute
     {

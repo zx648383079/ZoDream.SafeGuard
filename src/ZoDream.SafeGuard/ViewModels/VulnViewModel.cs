@@ -9,7 +9,6 @@ using System.Windows.Input;
 using ZoDream.SafeGuard.Extensions;
 using ZoDream.SafeGuard.Models;
 using ZoDream.Shared.ViewModel;
-using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.SafeGuard.ViewModels
 {

@@ -6,8 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ZoDream.SafeGuard.Finders;
 
-namespace ZoDream.SafeGuard.Finders.Filters
+namespace ZoDream.SafeGuard.Plugins.Filters
 {
     public class SameFileFilter : BaseFileFilter
     {
@@ -29,7 +30,8 @@ namespace ZoDream.SafeGuard.Finders.Filters
                     _exampleItems.Add(new FileLoader(info));
                     continue;
                 }
-                FileLoader.EachFiles(new DirectoryInfo(item), data => {
+                FileLoader.EachFiles(new DirectoryInfo(item), data =>
+                {
                     _exampleItems.Add(new FileLoader(data));
                 });
             }
@@ -53,14 +55,14 @@ namespace ZoDream.SafeGuard.Finders.Filters
             return false;
         }
 
-        protected virtual bool ValidFile(FileLoader example,  FileLoader file)
+        protected virtual bool ValidFile(FileLoader example, FileLoader file)
         {
             if (example.Length != file.Length)
             {
                 return false;
             }
             return example.Md5 == file.Md5;
-        } 
-        
+        }
+
     }
 }

@@ -6,8 +6,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using ZoDream.SafeGuard.Finders;
 
-namespace ZoDream.SafeGuard.Finders.Filters
+namespace ZoDream.SafeGuard.Plugins.Filters
 {
     public class NameFileFilter : BaseFileFilter
     {

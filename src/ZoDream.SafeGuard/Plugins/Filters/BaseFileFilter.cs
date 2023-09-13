@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ZoDream.SafeGuard.Finders;
+using ZoDream.SafeGuard.Plugins;
 
-namespace ZoDream.SafeGuard.Finders.Filters
+namespace ZoDream.SafeGuard.Plugins.Filters
 {
-    public abstract class BaseFileFilter: IFileFilter
+    public abstract class BaseFileFilter : IFileFilter
     {
         public IList<FileLoader> Filter(IList<FileLoader> files, CancellationToken token)
         {

@@ -2,8 +2,9 @@
 using System.IO;
 using System.Threading;
 using ZoDream.SafeGuard.DataNet;
+using ZoDream.SafeGuard.Finders;
 
-namespace ZoDream.SafeGuard.Finders.Filters
+namespace ZoDream.SafeGuard.Plugins.Filters
 {
     public class MLFileFilter : BaseFileFilter
     {

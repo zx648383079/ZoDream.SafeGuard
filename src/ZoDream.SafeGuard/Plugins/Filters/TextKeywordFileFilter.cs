@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ZoDream.SafeGuard.Finders;
 
-namespace ZoDream.SafeGuard.Finders.Filters
+namespace ZoDream.SafeGuard.Plugins.Filters
 {
     /// <summary>
     /// 关键字搜索
@@ -14,7 +15,7 @@ namespace ZoDream.SafeGuard.Finders.Filters
     {
         public TextKeywordFileFilter(string text)
         {
-            foreach (var item in text.Split(new char[] { '\n', '\r'}))
+            foreach (var item in text.Split(new char[] { '\n', '\r' }))
             {
                 if (string.IsNullOrWhiteSpace(item))
                 {

@@ -6,10 +6,21 @@ using System.Threading.Tasks;
 
 namespace ZoDream.SafeGuard.Models
 {
-    public enum FileStatus
+    public enum FileCheckStatus
     {
+        None,
+        Waiting,
+        Checking,
         Normal,
-        Poisoning,
-        Virus,
+        Poisoning, // 中毒
+        Virus,    // 病毒
+    }
+
+    public enum FileTransformStatus
+    {
+        None,
+        Waiting,
+        Doing,
+        Done,
     }
 }

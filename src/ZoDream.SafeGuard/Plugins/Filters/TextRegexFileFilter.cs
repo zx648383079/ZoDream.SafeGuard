@@ -5,8 +5,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using ZoDream.SafeGuard.Finders;
 
-namespace ZoDream.SafeGuard.Finders.Filters
+namespace ZoDream.SafeGuard.Plugins.Filters
 {
     /// <summary>
     /// 正则匹配
@@ -15,7 +16,7 @@ namespace ZoDream.SafeGuard.Finders.Filters
     {
         public TextRegexFileFilter(string text)
         {
-            foreach (var item in text.Split(new char[] { '\n', '\r'}))
+            foreach (var item in text.Split(new char[] { '\n', '\r' }))
             {
                 if (string.IsNullOrWhiteSpace(item))
                 {

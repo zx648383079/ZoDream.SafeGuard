@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ZoDream.SafeGuard.Finders;
 
-namespace ZoDream.SafeGuard.Finders.Filters
+namespace ZoDream.SafeGuard.Plugins.Filters
 {
     public class TextFileFilter : BaseFileFilter
     {
         public TextFileFilter(string text)
         {
-            foreach (var item in text.Split(new char[] { '\n', '\r'}))
+            foreach (var item in text.Split(new char[] { '\n', '\r' }))
             {
                 if (string.IsNullOrWhiteSpace(item))
                 {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZoDream.Shared.ViewModels;
+using ZoDream.Shared.ViewModel;
 
 namespace ZoDream.SafeGuard.Models
 {

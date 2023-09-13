@@ -1,8 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:cvt="clr-namespace:ZoDream.SafeGuard.Converters"
-                    xmlns:sctl="clr-namespace:ZoDream.Shared.Controls;assembly=ZoDream.Shared.Controls">
-    <cvt:ToggleConverter x:Key="ToggleCvt"/>
+                    xmlns:sctl="clr-namespace:ZoDream.Shared.Controls;assembly=ZoDream.Shared.Controls"
+                    xmlns:scvt="clr-namespace:ZoDream.Shared.Converters">
+    <scvt:ToggleConverter x:Key="ToggleCvt"/>
+    <cvt:StatusColorConverter x:Key="StatusColorCvt"/>
+    <cvt:StatusIconConverter x:Key="StatusIconCvt"/>
 
     <Style x:Key="IconBtn" TargetType="Button">
         <Setter Property="FontFamily" Value="{StaticResource IconFontFamily}"/>

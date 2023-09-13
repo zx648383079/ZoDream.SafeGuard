@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ZoDream.SafeGuard.Routes
+namespace ZoDream.Shared.Routes
 {
     public class ShellService : IDisposable
     {
@@ -67,6 +64,15 @@ namespace ZoDream.SafeGuard.Routes
             {
                 return;
             }
+            Navigate(route);
+        }
+
+        private void Navigate(ShellRoute route)
+        {
+            if (InnerFrame is null)
+            {
+                return;
+            }
             var page = CreatePage(route);
             if (!InnerFrame.Navigate(page))
             {
@@ -86,6 +92,13 @@ namespace ZoDream.SafeGuard.Routes
             }
         }
 
+        public void BackAsync()
+        {
+            if (InnerFrame != null && InnerFrame.CanGoBack)
+            {
+                InnerFrame.GoBack();
+            }
+        }
         private object? CreatePage(ShellRoute route)
         {
             if (Histories.TryGetValue(route.Name, out var page))
@@ -103,6 +116,11 @@ namespace ZoDream.SafeGuard.Routes
         public void Bind(Frame frame)
         {
             InnerFrame = frame;
+            if (frame is null || CurrentRoute is null)
+            {
+                return;
+            }
+            Navigate(CurrentRoute);
         }
 
         public void Dispose()

@@ -28,15 +28,18 @@
                 <sctl:IconButton Icon="&#xE773;" Label="病毒查找" Command="{Binding ScanCommand}" Style="{StaticResource TopLargeIcon}"/>
                 <sctl:IconButton Icon="&#xE7C9;" Label="AI训练" Command="{Binding TrainCommand}" Style="{StaticResource TopLargeIcon}"/>
                 <sctl:IconButton Icon="&#xEE65;" Label="漏洞扫描" Command="{Binding VulnCommand}" Style="{StaticResource TopLargeIcon}"/>
+                <sctl:IconButton Icon="&#xE15E;" Label="工具箱" Command="{Binding ToolCommand}" Style="{StaticResource TopLargeIcon}"/>
                 <sctl:IconButton Icon="&#xE115;" Label="设置" Command="{Binding SettingCommand}" Style="{StaticResource TopLargeIcon}"/>
             </StackPanel>
             <Grid Grid.Row="1" Style="{StaticResource BodyPanel}">
                 <Frame x:Name="BodyPanel" NavigationUIVisibility="Hidden"/>
             </Grid>
         </Grid>
-        <Grid Style="{StaticResource PrimaryPanel}" Visibility="{Binding IsHome,Converter={StaticResource ToggleCvt}}">
+        <Grid Style="{StaticResource PrimaryPanel}" 
+              Visibility="{Binding IsHome,Converter={StaticResource ToggleCvt}}">
             <Grid Style="{StaticResource CenterPanel}">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -45,8 +48,9 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <sctl:IconButton Icon="&#xE773;" Label="病毒查找" Command="{Binding ScanCommand}" Style="{StaticResource LargeIcon}"/>
-                <sctl:IconButton Icon="&#xEE65;" Label="漏洞扫描" Command="{Binding VulnCommand}" Grid.Row="1" Style="{StaticResource LargeIcon}"/>
+                <sctl:IconButton Icon="&#xEE65;" Label="漏洞扫描" Command="{Binding VulnCommand}" Grid.Column="2" Style="{StaticResource LargeIcon}"/>
                 <sctl:IconButton Icon="&#xE7C9;" Label="AI训练" Command="{Binding TrainCommand}" Grid.Column="1" Style="{StaticResource LargeIcon}"/>
+                <sctl:IconButton Icon="&#xE15E;" Label="工具箱" Command="{Binding ToolCommand}" Grid.Row="1" Style="{StaticResource LargeIcon}"/>
                 <sctl:IconButton Icon="&#xE115;" Label="设置" Command="{Binding SettingCommand}" Grid.Column="1" Grid.Row="1" Style="{StaticResource LargeIcon}"/>
             </Grid>
         </Grid>

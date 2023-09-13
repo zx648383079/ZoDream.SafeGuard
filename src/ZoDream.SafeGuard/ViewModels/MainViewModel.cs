@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using ZoDream.SafeGuard.Routes;
+using ZoDream.Shared.Routes;
 using ZoDream.Shared.ViewModel;
-using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.SafeGuard.ViewModels
 {
@@ -20,6 +19,7 @@ namespace ZoDream.SafeGuard.ViewModels
             TrainCommand = new RelayCommand(TapTrain);
             SettingCommand = new RelayCommand(TapSetting);
             VulnCommand = new RelayCommand(TapVuln);
+            ToolCommand = new RelayCommand(TapTool);
         }
 
         private bool isHome = true;
@@ -32,6 +32,7 @@ namespace ZoDream.SafeGuard.ViewModels
         public ICommand HomeCommand { get; private set; }
         public ICommand ScanCommand { get; private set; }
         public ICommand TrainCommand { get; private set; }
+        public ICommand ToolCommand { get; private set; }
         public ICommand SettingCommand { get; private set; }
 
         public ICommand VulnCommand { get; private set; }
@@ -45,6 +46,12 @@ namespace ZoDream.SafeGuard.ViewModels
         {
             IsHome = false;
             ShellManager.GoToAsync("vuln");
+        }
+
+        private void TapTool(object? _)
+        {
+            IsHome = false;
+            ShellManager.GoToAsync("tool");
         }
 
         private void TapScan(object? _)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 
-namespace ZoDream.SafeGuard.Converters
+namespace ZoDream.Shared.Converters
 {
     public class ToggleConverter : IValueConverter
     {

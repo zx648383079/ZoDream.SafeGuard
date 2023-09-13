@@ -11,7 +11,6 @@ using ZoDream.SafeGuard.Extensions;
 using ZoDream.SafeGuard.Finders;
 using ZoDream.SafeGuard.Models;
 using ZoDream.Shared.ViewModel;
-using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.SafeGuard.ViewModels
 {
@@ -32,13 +31,13 @@ namespace ZoDream.SafeGuard.ViewModels
             StopCommand = new RelayCommand(TapStop);
             DragExampleCommand = new RelayCommand(OnDragExample);
             DragMatchCommand = new RelayCommand(OnDragMatch);
-            Finder = new StorageFinder();
+            Finder = new FilterFinder();
             Finder.Finished += Finder_Finished;
             Finder.FileChanged += Finder_FileChanged;
             Finder.FoundChanged += Finder_FoundChanged;
         }
 
-        public StorageFinder Finder { get; private set; }
+        public FilterFinder Finder { get; private set; }
 
         #region 绑定的属性
 
@@ -128,6 +127,14 @@ namespace ZoDream.SafeGuard.ViewModels
             get => matchFileItems;
             set => Set(ref matchFileItems, value);
         }
+
+        private ObservableCollection<FileCheckItem> checkItems = new();
+
+        public ObservableCollection<FileCheckItem> CheckItems {
+            get => checkItems;
+            set => Set(ref checkItems, value);
+        }
+
 
         private string progressTip = string.Empty;
 
@@ -271,7 +278,7 @@ namespace ZoDream.SafeGuard.ViewModels
         private void Finder_FoundChanged(FileInfo item)
         {
             App.Current.Dispatcher.Invoke(() => {
-                
+                CheckItems.Add(new FileCheckItem(item.Name, item.FullName, FileCheckStatus.Normal));
             });
         }
 
