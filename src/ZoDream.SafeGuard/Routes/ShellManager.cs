@@ -33,6 +33,11 @@ namespace ZoDream.Shared.Routes
             Service.GoToAsync(routeName);
         }
 
+        public static void BackAsync()
+        {
+            Service.BackAsync();
+        }
+
         public static void BindFrame(Frame bodyPanel)
         {
             Service.Bind(bodyPanel);

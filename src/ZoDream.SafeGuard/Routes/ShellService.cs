@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using ZoDream.SafeGuard;
 
 namespace ZoDream.Shared.Routes
 {
@@ -10,7 +11,8 @@ namespace ZoDream.Shared.Routes
         private Frame? InnerFrame;
         private readonly Dictionary<string, ShellRoute> Routes = new();
 
-        private readonly Dictionary<string, FrameworkElement> Histories = new();
+        private readonly Dictionary<string, FrameworkElement> RouteCaches = new();
+        private readonly List<string> Histories = new();
 
         public FrameworkElement? Current { get; private set; }
         public ShellRoute? CurrentRoute { get; private set; }
@@ -20,8 +22,9 @@ namespace ZoDream.Shared.Routes
             if (Routes.ContainsKey(routeName))
             {
                 Routes[routeName] = new ShellRoute(routeName, page);
-                Histories.Remove(routeName);
-            } else
+                RouteCaches.Remove(routeName);
+            }
+            else
             {
                 Routes.Add(routeName, new ShellRoute(routeName, page));
             }
@@ -32,7 +35,7 @@ namespace ZoDream.Shared.Routes
             if (Routes.ContainsKey(routeName))
             {
                 Routes[routeName] = new ShellRoute(routeName, page, viewModel);
-                Histories.Remove(routeName);
+                RouteCaches.Remove(routeName);
             }
             else
             {
@@ -56,10 +59,29 @@ namespace ZoDream.Shared.Routes
                 return;
             }
             Current = null;
-            if (InnerFrame is null)
+            if (!Routes.TryGetValue(routeName, out var route))
             {
                 return;
             }
+            var i = Histories.IndexOf(routeName);
+            if (i >= 0)
+            {
+                Histories.RemoveRange(i + 1, Histories.Count - i - 1);
+            }
+            else
+            {
+                Histories.Add(routeName);
+            }
+            if (InnerFrame is null)
+            {
+                CurrentRoute = route;
+                return;
+            }
+            Navigate(route);
+        }
+
+        private void Navigate(string routeName)
+        {
             if (!Routes.TryGetValue(routeName, out var route))
             {
                 return;
@@ -83,6 +105,10 @@ namespace ZoDream.Shared.Routes
                 Current = o;
                 CurrentRoute = route;
             }
+            //if (page is Page p)
+            //{
+            //    App.ViewModel.Title = p.Title;
+            //}
             if (route.DataContext is not null && Current is not null)
             {
                 if (Current.DataContext is null)
@@ -94,21 +120,24 @@ namespace ZoDream.Shared.Routes
 
         public void BackAsync()
         {
-            if (InnerFrame != null && InnerFrame.CanGoBack)
+            if (Histories.Count <= 1)
             {
-                InnerFrame.GoBack();
+                return;
             }
+            var i = Histories.Count - 1;
+            Histories.RemoveAt(i);
+            Navigate(Histories[i - 1]);
         }
         private object? CreatePage(ShellRoute route)
         {
-            if (Histories.TryGetValue(route.Name, out var page))
+            if (RouteCaches.TryGetValue(route.Name, out var page))
             {
                 return page;
             }
             var instance = Activator.CreateInstance(route.Page);
             if (instance is FrameworkElement o)
             {
-                Histories.Add(route.Name, o);
+                RouteCaches.Add(route.Name, o);
             }
             return instance;
         }
