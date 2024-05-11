@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using ZoDream.SafeGuard.Finders;
 
 namespace ZoDream.SafeGuard.Plugins.Filters
@@ -16,7 +13,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
     {
         public TextRegexFileFilter(string text)
         {
-            foreach (var item in text.Split(new char[] { '\n', '\r' }))
+            foreach (var item in text.Split(['\n', '\r']))
             {
                 if (string.IsNullOrWhiteSpace(item))
                 {
@@ -32,7 +29,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
             }
         }
 
-        private readonly IList<Regex> _lines = new List<Regex>();
+        private readonly IList<Regex> _lines = [];
         public override bool Valid(FileLoader fileInfo, CancellationToken token)
         {
             if (_lines.Count == 0)

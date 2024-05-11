@@ -7,7 +7,7 @@ namespace ZoDream.SafeGuard.Finders
 {
     public class FilterFinder: StorageFinder
     {
-        public IList<IFileFilter>? FilterItems { get; set; } = new List<IFileFilter>();
+        public IList<IFileFilter>? FilterItems { get; set; } = [];
 
         protected override bool IsValidFile(FileInfo fileInfo, CancellationToken token = default)
         {

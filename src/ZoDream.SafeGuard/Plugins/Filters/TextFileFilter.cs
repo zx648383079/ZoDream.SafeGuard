@@ -12,7 +12,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
     {
         public TextFileFilter(string text)
         {
-            foreach (var item in text.Split(new char[] { '\n', '\r' }))
+            foreach (var item in text.Split(['\n', '\r']))
             {
                 if (string.IsNullOrWhiteSpace(item))
                 {

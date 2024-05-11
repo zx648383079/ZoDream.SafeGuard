@@ -159,12 +159,12 @@
                 <TextBox Text="{Binding TestText}" 
                          AcceptsReturn="True"
                          AcceptsTab="True"
-                         Background="Transparent" BorderThickness="0"/>
+                         Style="{StaticResource TextDisplayTb}"/>
             </GroupBox>
             <GroupBox Header="处理结果" Grid.Column="1" Grid.Row="1">
                 <TextBox Text="{Binding TestResult}" 
                          IsReadOnly="True"
-                         Background="Transparent" BorderThickness="0"/>
+                         Style="{StaticResource TextDisplayTb}"/>
             </GroupBox>
         </Grid>
     </Grid>

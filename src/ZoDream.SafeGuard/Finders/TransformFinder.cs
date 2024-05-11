@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -12,7 +11,19 @@ namespace ZoDream.SafeGuard.Finders
 {
     public partial class TransformFinder : StorageFinder
     {
-        public IList<IFileTransformer> TransformerItems { get; set; } = new List<IFileTransformer>();
+        public IList<IFileTransformer> TransformerItems { get; set; } = [];
+
+        protected override IEnumerable<string> Preprocess(IEnumerable<string> files)
+        {
+            foreach (var item in TransformerItems)
+            {
+                if (item is IFilePreprocess target)
+                {
+                    files = target.Preprocess(files);
+                }
+            }
+            return files;
+        }
 
         protected override bool IsValidFile(FileInfo fileInfo, CancellationToken token = default)
         {

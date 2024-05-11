@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ZoDream.SafeGuard.Extensions;
 using ZoDream.SafeGuard.Finders;
 using ZoDream.SafeGuard.Models;
+using ZoDream.SafeGuard.Plugins.Filters;
+using ZoDream.SafeGuard.Plugins.Processes;
 using ZoDream.Shared.ViewModel;
 
 namespace ZoDream.SafeGuard.ViewModels
@@ -23,6 +23,7 @@ namespace ZoDream.SafeGuard.ViewModels
             FileStepCommand = new RelayCommand(TapFileStep);
             TextStepCommand = new RelayCommand(TapTextStep);
             AiStepCommand = new RelayCommand(TapAiStep);
+            RuleStepCommand = new RelayCommand(TapRuleStep);
             StartCommand = new RelayCommand(TapStart);
             SelectExampleCommand = new RelayCommand(TapSelectExample);
             SelectMatchCommand = new RelayCommand(TapSelectMatch);
@@ -31,13 +32,10 @@ namespace ZoDream.SafeGuard.ViewModels
             StopCommand = new RelayCommand(TapStop);
             DragExampleCommand = new RelayCommand(OnDragExample);
             DragMatchCommand = new RelayCommand(OnDragMatch);
-            Finder = new FilterFinder();
-            Finder.Finished += Finder_Finished;
-            Finder.FileChanged += Finder_FileChanged;
-            Finder.FoundChanged += Finder_FoundChanged;
+            SeeFileCommand = new RelayCommand(TapSeeFile);
         }
 
-        public FilterFinder Finder { get; private set; }
+        public StorageFinder? Finder { get; private set; }
 
         #region 绑定的属性
 
@@ -66,7 +64,7 @@ namespace ZoDream.SafeGuard.ViewModels
             }
         }
 
-        private string[] fileMatchTypes = new string[]{ "完全匹配", "仅包含"};
+        private string[] fileMatchTypes = [ "完全匹配", "仅包含"];
 
         public string[] FileMatchTypes {
             get => fileMatchTypes;
@@ -87,7 +85,7 @@ namespace ZoDream.SafeGuard.ViewModels
             set => Set(ref fileNameRegex, value);
         }
 
-        private string[] exampleTextTypes = new string[] {"文本匹配", "关键字匹配", "正则匹配" };
+        private string[] exampleTextTypes = ["文本匹配", "关键字匹配", "正则匹配" ];
 
         public string[] ExampleTextTypes {
             get => exampleTextTypes;
@@ -113,7 +111,7 @@ namespace ZoDream.SafeGuard.ViewModels
 
 
 
-        private ObservableCollection<FileInfoItem> exampleItems = new();
+        private ObservableCollection<FileInfoItem> exampleItems = [];
 
         public ObservableCollection<FileInfoItem> ExampleItems {
             get => exampleItems;
@@ -121,14 +119,14 @@ namespace ZoDream.SafeGuard.ViewModels
         }
 
 
-        private ObservableCollection<FileInfoItem> matchFileItems = new();
+        private ObservableCollection<FileInfoItem> matchFileItems = [];
 
         public ObservableCollection<FileInfoItem> MatchFileItems {
             get => matchFileItems;
             set => Set(ref matchFileItems, value);
         }
 
-        private ObservableCollection<FileCheckItem> checkItems = new();
+        private ObservableCollection<FileCheckItem> checkItems = [];
 
         public ObservableCollection<FileCheckItem> CheckItems {
             get => checkItems;
@@ -157,7 +155,10 @@ namespace ZoDream.SafeGuard.ViewModels
         public ICommand BackCommand { get; private set; }
         public ICommand FileStepCommand { get; private set; }
         public ICommand TextStepCommand { get; private set; }
+        public ICommand RuleStepCommand { get; private set; }
         public ICommand AiStepCommand { get; private set; }
+
+
 
         public ICommand StartCommand { get; private set; }
         public ICommand StopCommand { get; private set; }
@@ -170,6 +171,7 @@ namespace ZoDream.SafeGuard.ViewModels
         public ICommand DragMatchCommand { get; private set; }
         public ICommand DeleteExampleCommand { get; private set; }
         public ICommand DeleteMatchCommand { get; private set; }
+        public ICommand SeeFileCommand { get; private set; }
 
         private void TapSelectExample(object? _)
         {
@@ -230,14 +232,69 @@ namespace ZoDream.SafeGuard.ViewModels
 
         private void TapStart(object? _)
         {
+            Finder?.Stop();
             Step = 4;
             IsPaused = false;
+            Finder = CreateFinder();
+            Finder.Finished += Finder_Finished;
+            Finder.FileChanged += Finder_FileChanged;
+            Finder.FoundChanged += Finder_FoundChanged;
             Finder.Start(MatchFileItems.Select(i => i.FileName).ToArray());
+        }
+
+        private StorageFinder CreateFinder()
+        {
+            if (ScanType == 2)
+            {
+                return new ProcessFinder()
+                {
+                    ProcessItems = [new JavascriptProcess(), new PhpProcess()]
+                };
+            }
+            var finder = new FilterFinder();
+            if (ScanType > 2)
+            {
+                finder.FilterItems = [new MLFileFilter(new DataNet.Train())];
+                return finder;
+            }
+            finder.FilterItems = [];
+            if (!string.IsNullOrWhiteSpace(FileNameRegex))
+            {
+                finder.FilterItems.Add(new NameFileFilter(FileNameRegex));
+            }
+            if (ScanType < 1)
+            {
+                var fileItems = ExampleItems.Where(i => !i.IsFolder).Select(i => new FileInfo(i.FileName));
+                switch (FileMatchType)
+                {
+                    case 1:
+                        finder.FilterItems.Add(new SomeSameFileFilter(fileItems));
+                        break;
+                    default:
+                        finder.FilterItems.Add(new SameFileFilter(fileItems));
+                        break;
+                }
+            } else
+            {
+                switch (ExampleTextType)
+                {
+                    case 1:
+                        finder.FilterItems.Add(new TextKeywordFileFilter(ExampleText));
+                        break;
+                    case 2:
+                        finder.FilterItems.Add(new TextRegexFileFilter(ExampleText));
+                        break;
+                    default:
+                        finder.FilterItems.Add(new TextFileFilter(ExampleText));
+                        break;
+                }
+            }
+            return finder;
         }
 
         private void TapStop(object? _)
         {
-            Finder.Stop();
+            Finder?.Stop();
             IsPaused = true;
         }
 
@@ -258,9 +315,15 @@ namespace ZoDream.SafeGuard.ViewModels
             Step = 2;
         }
 
-        private void TapAiStep(object? _)
+        private void TapRuleStep(object? _)
         {
             ScanType = 2;
+            Step = 3;
+        }
+
+        private void TapAiStep(object? _)
+        {
+            ScanType = 3;
             Step = 3;
         }
 
@@ -269,6 +332,9 @@ namespace ZoDream.SafeGuard.ViewModels
             if (arg is FileInfoItem o)
             {
                 Process.Start("explorer", $"/select,{o.FileName}");
+            } else if (arg is FileCheckItem f)
+            {
+                Process.Start("explorer", $"/select,{f.FileName}");
             }
         }
 
@@ -278,7 +344,7 @@ namespace ZoDream.SafeGuard.ViewModels
         private void Finder_FoundChanged(FileInfo item)
         {
             App.Current.Dispatcher.Invoke(() => {
-                CheckItems.Add(new FileCheckItem(item.Name, item.FullName, FileCheckStatus.Normal));
+                CheckItems.Add(new FileCheckItem(item.Name, item.FullName, ScanType >= 2 ? FileCheckStatus.Virus : FileCheckStatus.Normal));
             });
         }
 

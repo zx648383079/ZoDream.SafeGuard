@@ -39,21 +39,21 @@ namespace ZoDream.SafeGuard.ViewModels
             }
         }
 
-        private ObservableCollection<FileInfoItem> normalFileItems = new();
+        private ObservableCollection<FileInfoItem> normalFileItems = [];
 
         public ObservableCollection<FileInfoItem> NormalFileItems {
             get => normalFileItems;
             set => Set(ref normalFileItems, value);
         }
 
-        private ObservableCollection<FileInfoItem> poisoningFileItems = new();
+        private ObservableCollection<FileInfoItem> poisoningFileItems = [];
 
         public ObservableCollection<FileInfoItem> PoisoningFileItems {
             get => poisoningFileItems;
             set => Set(ref poisoningFileItems, value);
         }
 
-        private ObservableCollection<FileInfoItem> virusFileItems = new();
+        private ObservableCollection<FileInfoItem> virusFileItems = [];
 
         public ObservableCollection<FileInfoItem> VirusFileItems {
             get => virusFileItems;

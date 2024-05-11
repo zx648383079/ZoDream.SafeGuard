@@ -20,7 +20,7 @@ namespace ZoDream.SafeGuard.Plugins.Transformers
             return MatchRegex().Replace(content, "");
         }
 
-        [GeneratedRegex(@"\<!--[\s\S]+--\>")]
+        [GeneratedRegex(@"\<!--\s+Copyright[\s\S]+Spidersoft\s+Ltd\s+--\>")]
         private static partial Regex MatchRegex();
     }
 }

@@ -15,7 +15,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
     {
         public TextKeywordFileFilter(string text)
         {
-            foreach (var item in text.Split(new char[] { '\n', '\r' }))
+            foreach (var item in text.Split(['\n', '\r']))
             {
                 if (string.IsNullOrWhiteSpace(item))
                 {
@@ -29,7 +29,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
 
         private readonly int _length = 0;
 
-        private readonly IList<string> _lines = new List<string>();
+        private readonly IList<string> _lines = [];
         public override bool Valid(FileLoader fileInfo, CancellationToken token)
         {
             if (_lines.Count == 0)

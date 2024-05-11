@@ -4,15 +4,11 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ZoDream.SafeGuard.Extensions;
 using ZoDream.SafeGuard.Finders;
 using ZoDream.SafeGuard.Models;
 using ZoDream.SafeGuard.Plugins;
-using ZoDream.SafeGuard.Plugins.Transformers;
 using ZoDream.Shared.Routes;
 using ZoDream.Shared.Storage;
 using ZoDream.Shared.ViewModel;
@@ -86,14 +82,14 @@ namespace ZoDream.SafeGuard.ViewModels
         }
 
 
-        private ObservableCollection<FileInfoItem> matchFileItems = new();
+        private ObservableCollection<FileInfoItem> matchFileItems = [];
 
         public ObservableCollection<FileInfoItem> MatchFileItems {
             get => matchFileItems;
             set => Set(ref matchFileItems, value);
         }
 
-        private ObservableCollection<FileTransformItem> transformItems = new();
+        private ObservableCollection<FileTransformItem> transformItems = [];
 
         public ObservableCollection<FileTransformItem> TransformItems {
             get => transformItems;

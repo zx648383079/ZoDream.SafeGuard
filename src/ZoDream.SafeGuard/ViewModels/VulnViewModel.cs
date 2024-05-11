@@ -75,7 +75,7 @@ namespace ZoDream.SafeGuard.ViewModels
             set => Set(ref baseUri, value);
         }
 
-        private ObservableCollection<FileInfoItem> matchFileItems = new();
+        private ObservableCollection<FileInfoItem> matchFileItems = [];
 
         public ObservableCollection<FileInfoItem> MatchFileItems {
             get => matchFileItems;

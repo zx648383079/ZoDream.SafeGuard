@@ -6,14 +6,9 @@ using ZoDream.SafeGuard.Finders;
 
 namespace ZoDream.SafeGuard.Plugins.Filters
 {
-    public class MLFileFilter : BaseFileFilter
+    public class MLFileFilter(Train nn) : BaseFileFilter
     {
-        public MLFileFilter(Train nn)
-        {
-            _nn = nn;
-        }
-
-        private readonly Train _nn;
+        private readonly Train _nn = nn;
 
         public override bool Valid(FileLoader fileInfo, CancellationToken token)
         {

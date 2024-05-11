@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using ZoDream.SafeGuard.Finders;
-using ZoDream.SafeGuard.Models;
 
 namespace ZoDream.SafeGuard.Plugins
 {

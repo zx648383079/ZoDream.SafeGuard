@@ -23,6 +23,7 @@
         <StackPanel Visibility="{Binding Step, Converter={StaticResource ToggleCvt},ConverterParameter=0}" Style="{StaticResource CenterPanel}">
             <sctl:IconButton Icon="&#xE16F;" Label="文件匹配" Command="{Binding FileStepCommand}" Style="{StaticResource LargeIcon}"/>
             <sctl:IconButton Icon="&#xE773;" Label="内容匹配" Command="{Binding TextStepCommand}" Style="{StaticResource LargeIcon}"/>
+            <sctl:IconButton Icon="&#xEB55;" Label="离线匹配" Command="{Binding RuleStepCommand}" Style="{StaticResource LargeIcon}"/>
             <sctl:IconButton Icon="&#xEDE4;" Label="AI匹配" Command="{Binding AiStepCommand}" Style="{StaticResource LargeIcon}"/>
         </StackPanel>
         <!--文件匹配-->
@@ -44,7 +45,7 @@
                 </Grid.ColumnDefinitions>
                 <sctl:IconButton Icon="&#xE112;" Label="返回" Command="{Binding BackCommand}"/>
                 <ComboBox Grid.Column="1" ItemsSource="{Binding FileMatchTypes}" SelectedIndex="{Binding FileMatchType,Mode=TwoWay}"/>
-                <TextBox Text="{Binding FileNameRegex,Mode=TwoWay}" Grid.Column="2" MaxLines="1"/>
+                <TextBox Text="{Binding FileNameRegex,Mode=TwoWay}" ToolTip="文件名的过滤规则" Grid.Column="2" MaxLines="1"/>
                 <sctl:IconButton Icon="&#xE11A;" Label="开始扫描" Grid.Column="3" Command="{Binding StartCommand}"/>
             </Grid>
             <GroupBox Grid.Row="1" Header="样本" 
@@ -133,7 +134,7 @@
                 </Grid.ColumnDefinitions>
                 <sctl:IconButton Icon="&#xE112;" Label="返回" Command="{Binding BackCommand}"/>
                 <ComboBox Grid.Column="1" ItemsSource="{Binding ExampleTextTypes}" SelectedIndex="{Binding ExampleTextType,Mode=TwoWay}"/>
-                <TextBox Text="{Binding FileNameRegex,Mode=TwoWay}" Grid.Column="2" MaxLines="1"/>
+                <TextBox Text="{Binding FileNameRegex,Mode=TwoWay}" ToolTip="文件名的过滤规则" Grid.Column="2" MaxLines="1"/>
                 <sctl:IconButton Icon="&#xE11A;" Label="开始扫描" Grid.Column="3" Command="{Binding StartCommand}"/>
             </Grid>
             <GroupBox Grid.Row="1" Header="样本规则">
@@ -238,12 +239,15 @@
             <sctl:IconButton Icon="&#xE112;" Label="返回" Visibility="{Binding IsPaused, Converter={StaticResource ToggleCvt}}" 
                              Command="{Binding BackCommand}"/>
             <TextBlock Text="{Binding ProgressTip}" Grid.Column="1"/>
-            <sctl:IconButton Icon="&#xE112;" Label="{Binding StopText}"
+            <sctl:IconButton Icon="&#xE72C;" Label="{Binding StopText}"
                               Grid.Column="2"
                              Command="{Binding StopCommand}"/>
             <ListView Grid.Row="1" Grid.ColumnSpan="3"
-                       ItemsSource="{Binding CheckItems}" 
+                       ItemsSource="{Binding CheckItems}"
                       HorizontalContentAlignment="Stretch">
+                <Behaviors:Interaction.Behaviors>
+                    <bhv:ListItemDoubleClickBehavior Command="{Binding SeeFileCommand}"/>
+                </Behaviors:Interaction.Behaviors>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type mdl:FileCheckItem}">
                         <Grid>

@@ -19,11 +19,11 @@ namespace ZoDream.SafeGuard.Finders
 
         public void Start(IEnumerable<string> folders)
         {
-            Stop();
+            _cancelTokenSource?.Cancel();
             _cancelTokenSource = new CancellationTokenSource();
             var token = _cancelTokenSource.Token;
             Task.Factory.StartNew(() => {
-                CheckAnyFile(folders, token);
+                CheckAnyFile(Preprocess(folders), token);
                 Finished?.Invoke();
             }, token);
         }
@@ -35,6 +35,11 @@ namespace ZoDream.SafeGuard.Finders
                 _cancelTokenSource.Cancel();
                 Finished?.Invoke();
             }
+        }
+
+        protected virtual IEnumerable<string> Preprocess(IEnumerable<string> files)
+        {
+            return files;
         }
 
         private void CheckAnyFile(IEnumerable<string> folders, CancellationToken token = default)

@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZoDream.SafeGuard.Models;
 using ZoDream.Shared.Storage;
 
 namespace ZoDream.SafeGuard.Finders
 {
-    public class FileLoader: IDisposable
+    public class FileLoader(FileInfo info) : IDisposable
     {
-        public FileInfo File { get; private set; }
+        public FileInfo File { get; private set; } = info;
 
         public FileCheckStatus Status { get; set; } = FileCheckStatus.Normal;
 
@@ -23,11 +19,6 @@ namespace ZoDream.SafeGuard.Finders
 
         private StreamReader? _reader;
         public StreamReader Reader => _reader ??= LocationStorage.Reader(File.FullName);
-
-        public FileLoader(FileInfo info)
-        {
-            File = info;
-        }
 
         public FileLoader(string fileName): this(new FileInfo(fileName))
         {

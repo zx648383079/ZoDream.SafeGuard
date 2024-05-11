@@ -5,8 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using ZoDream.SafeGuard.Finders;
 
 namespace ZoDream.SafeGuard.Plugins.Filters
