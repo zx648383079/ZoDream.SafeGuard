@@ -39,7 +39,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
         protected readonly IList<FileLoader> _exampleItems = new List<FileLoader>();
         private FileEigenvalue[]? FileEigenvalues;
 
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             FileEigenvalues ??= _exampleItems.Select(item => new FileEigenvalue(item)).ToArray();
             var checkItems = new List<FileEigenvalue>();

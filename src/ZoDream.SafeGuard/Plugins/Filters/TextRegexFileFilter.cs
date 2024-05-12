@@ -30,7 +30,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
         }
 
         private readonly IList<Regex> _lines = [];
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             if (_lines.Count == 0)
             {

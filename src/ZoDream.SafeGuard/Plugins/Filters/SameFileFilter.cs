@@ -34,7 +34,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
 
         protected readonly IList<FileLoader> _exampleItems = new List<FileLoader>();
 
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             foreach (var item in _exampleItems)
             {

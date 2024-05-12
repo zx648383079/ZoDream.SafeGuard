@@ -9,7 +9,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
     /// </summary>
     public partial class Base64FileFilter : BaseFileFilter
     {
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             var reader = fileInfo.Reader;
             reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);

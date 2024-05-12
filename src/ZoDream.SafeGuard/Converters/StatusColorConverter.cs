@@ -27,7 +27,7 @@ namespace ZoDream.SafeGuard.Converters
                 return c switch
                 {
                     FileCheckStatus.Waiting or FileCheckStatus.Checking => new SolidColorBrush(Colors.Gray),
-                    FileCheckStatus.Normal => new SolidColorBrush(Colors.Green),
+                    FileCheckStatus.Normal or FileCheckStatus.Valid => new SolidColorBrush(Colors.Green),
                     FileCheckStatus.Poisoning => new SolidColorBrush(Colors.Yellow),
                     FileCheckStatus.Virus => new SolidColorBrush(Colors.Red),
                     _ => new SolidColorBrush(Colors.Black)

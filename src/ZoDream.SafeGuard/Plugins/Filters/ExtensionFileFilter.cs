@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using ZoDream.SafeGuard.Finders;
 
 namespace ZoDream.SafeGuard.Plugins.Filters
@@ -48,7 +43,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
             }
         }
 
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             return _extensionItems.Count == 0 || _extensionItems.Contains(fileInfo.File.Extension.ToLower());
         }

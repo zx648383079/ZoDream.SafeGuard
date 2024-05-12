@@ -3,24 +3,24 @@ using ZoDream.SafeGuard.Plugins.Filters;
 
 namespace ZoDream.SafeGuard.Plugins.Processes
 {
-    public class PhpProcess : IFileProcess
+    public class MediaProcess : IFileProcess
     {
         public string[] LoadExtension()
         {
-            return ["php", "phtml"];
+            return ["pn", "jpeg", "webp", "bmp", "gif", "jpg"];
         }
 
         public IFileFilter[] LoadFilters()
         {
             return [
-                new TextKeywordFileFilter("eval(")
+                new ByteFileFilter([
+                    ["<%", "%>"],
+                    ["<?php"],
+                    ["<?=", "?>"]
+                ])
                 {
                     VaildStatus = Models.FileCheckStatus.Poisoning,
-                },
-                new Base64FileFilter()
-                {
-                    VaildStatus = Models.FileCheckStatus.Poisoning,
-                },
+                }
             ];
         }
 

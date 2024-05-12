@@ -8,7 +8,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
     {
         private readonly Regex _nameRegex = new(pattern, RegexOptions.IgnoreCase);
 
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             return _nameRegex.IsMatch(fileInfo.Name);
         }

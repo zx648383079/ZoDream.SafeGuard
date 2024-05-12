@@ -101,6 +101,9 @@
             <ListBox ItemsSource="{Binding TransformItems}" 
                      HorizontalContentAlignment="Stretch"
                      Grid.Row="1" Grid.ColumnSpan="3">
+                <Behaviors:Interaction.Behaviors>
+                    <bhv:ListItemDoubleClickBehavior Command="{Binding SeeFileCommand}"/>
+                </Behaviors:Interaction.Behaviors>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type mdl:FileTransformItem}">
                         <Grid>

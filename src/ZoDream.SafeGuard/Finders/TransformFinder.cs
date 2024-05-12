@@ -4,14 +4,27 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using ZoDream.SafeGuard.Models;
 using ZoDream.SafeGuard.Plugins;
 using ZoDream.Shared.Storage;
 
 namespace ZoDream.SafeGuard.Finders
 {
-    public partial class TransformFinder : StorageFinder
+    public partial class TransformFinder : StorageFinder, ITransformFinder
     {
+
+        public event FinderEventHandler? FoundChanged;
         public IList<IFileTransformer> TransformerItems { get; set; } = [];
+
+        public void Clear()
+        {
+            TransformerItems.Clear();
+        }
+
+        public void Add(IFileTransformer transformer)
+        {
+            TransformerItems.Add(transformer);
+        }
 
         protected override IEnumerable<string> Preprocess(IEnumerable<string> files)
         {

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace ZoDream.SafeGuard.Plugins.Filters
+namespace ZoDream.SafeGuard.Plugins
 {
-    public abstract class CharFileFilter
+    public abstract class CharFinder
     {
-        protected List<CharVerifyData> VerifyItems { get; set; } = new();
+        protected List<CharVerifyData> VerifyItems { get; set; } = [];
 
         protected abstract long VerifyLength { get; }
 

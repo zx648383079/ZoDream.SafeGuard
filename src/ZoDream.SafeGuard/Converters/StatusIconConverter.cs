@@ -31,6 +31,7 @@ namespace ZoDream.SafeGuard.Converters
                     FileCheckStatus.Waiting => "\uE916",
                     FileCheckStatus.Checking => "\uE712",
                     FileCheckStatus.Normal => "\uE930",
+                    FileCheckStatus.Valid => "\uEA39",
                     FileCheckStatus.Poisoning => "\uE7BA",
                     FileCheckStatus.Virus => "\uE945",
                     _ => string.Empty

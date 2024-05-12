@@ -28,12 +28,13 @@ namespace ZoDream.SafeGuard.ViewModels
             DeleteMatchCommand = new RelayCommand(TapDeleteMatch);
             StopCommand = new RelayCommand(TapStop);
             DragMatchCommand = new RelayCommand(OnDragMatch);
+            SeeFileCommand = new RelayCommand(TapSeeFile);
             Finder = new TransformFinder();
             Finder.Finished += Finder_Finished;
             Finder.FileChanged += Finder_FileChanged;
             Finder.FoundChanged += Finder_FoundChanged;
         }
-        public TransformFinder Finder { get; private set; }
+        public ITransformFinder Finder { get; private set; }
 
         private int step = 0;
 
@@ -126,6 +127,8 @@ namespace ZoDream.SafeGuard.ViewModels
         public ICommand TestExecuteCommand { get; private set; }
 
         public ICommand DragTestCommand { get; private set; }
+
+        public ICommand SeeFileCommand { get; private set; }
 
         private void TapTest(object? _)
         {
@@ -245,8 +248,8 @@ namespace ZoDream.SafeGuard.ViewModels
                 var transformer = Activator.CreateInstance(o.Target);
                 if (transformer is IFileTransformer target)
                 {
-                    Finder.TransformerItems.Clear();
-                    Finder.TransformerItems.Add(
+                    Finder.Clear();
+                    Finder.Add(
                         target
                     );
                 }

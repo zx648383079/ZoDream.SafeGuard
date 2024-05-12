@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -35,7 +34,7 @@ namespace ZoDream.SafeGuard.ViewModels
             SeeFileCommand = new RelayCommand(TapSeeFile);
         }
 
-        public StorageFinder? Finder { get; private set; }
+        public IFilterFinder? Finder { get; private set; }
 
         #region 绑定的属性
 
@@ -233,6 +232,7 @@ namespace ZoDream.SafeGuard.ViewModels
         private void TapStart(object? _)
         {
             Finder?.Stop();
+            CheckItems.Clear();
             Step = 4;
             IsPaused = false;
             Finder = CreateFinder();
@@ -242,13 +242,16 @@ namespace ZoDream.SafeGuard.ViewModels
             Finder.Start(MatchFileItems.Select(i => i.FileName).ToArray());
         }
 
-        private StorageFinder CreateFinder()
+        private IFilterFinder CreateFinder()
         {
             if (ScanType == 2)
             {
                 return new ProcessFinder()
                 {
-                    ProcessItems = [new JavascriptProcess(), new PhpProcess()]
+                    ProcessItems = [
+                        new JavascriptProcess(), new PhpProcess(),
+                        new AspProcess(), new MediaProcess(),
+                    ]
                 };
             }
             var finder = new FilterFinder();
@@ -260,7 +263,10 @@ namespace ZoDream.SafeGuard.ViewModels
             finder.FilterItems = [];
             if (!string.IsNullOrWhiteSpace(FileNameRegex))
             {
-                finder.FilterItems.Add(new NameFileFilter(FileNameRegex));
+                finder.FilterItems.Add(new NameFileFilter(FileNameRegex)
+                {
+                    VaildStatus = FileCheckStatus.Pass
+                });
             }
             if (ScanType < 1)
             {
@@ -341,10 +347,10 @@ namespace ZoDream.SafeGuard.ViewModels
         #endregion
 
 
-        private void Finder_FoundChanged(FileInfo item)
+        private void Finder_FoundChanged(FileInfo item, FileCheckStatus status)
         {
             App.Current.Dispatcher.Invoke(() => {
-                CheckItems.Add(new FileCheckItem(item.Name, item.FullName, ScanType >= 2 ? FileCheckStatus.Virus : FileCheckStatus.Normal));
+                CheckItems.Add(new FileCheckItem(item.Name, item.FullName, status));
             });
         }
 

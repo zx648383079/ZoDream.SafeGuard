@@ -11,9 +11,23 @@ namespace ZoDream.SafeGuard.Models
         None,
         Waiting,
         Checking,
+        Pass,
+        /// <summary>
+        /// 不检测到
+        /// </summary>
         Normal,
-        Poisoning, // 中毒
-        Virus,    // 病毒
+        /// <summary>
+        /// 检测到
+        /// </summary>
+        Valid,
+        /// <summary>
+        /// 中毒文件
+        /// </summary>
+        Poisoning,
+        /// <summary>
+        /// 病毒
+        /// </summary>
+        Virus,
     }
 
     public enum FileTransformStatus

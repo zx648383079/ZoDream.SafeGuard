@@ -2,19 +2,20 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using ZoDream.SafeGuard.Models;
 using ZoDream.SafeGuard.Plugins;
 
 namespace ZoDream.SafeGuard.Finders
 {
-    public class ProcessFinder: StorageFinder
+    public class ProcessFinder: BaseFilterFinder
     {
         public IList<IFileProcess>? ProcessItems { get; set; } = [];
 
-        protected override bool IsValidFile(FileInfo fileInfo, CancellationToken token = default)
+        protected override FileCheckStatus CheckFileStatus(FileInfo fileInfo, CancellationToken token = default)
         {
             if (ProcessItems == null || ProcessItems.Count == 0)
             {
-                return true;
+                return FileCheckStatus.Pass;
             }
             var extension = fileInfo.Extension[1..].ToLower();
             using var fileLoader = new FileLoader(fileInfo);
@@ -30,15 +31,16 @@ namespace ZoDream.SafeGuard.Finders
                 {
                     if (token.IsCancellationRequested)
                     {
-                        return false;
+                        return FileCheckStatus.Pass;
                     }
-                    if (!item.Valid(fileLoader, token))
+                    var status = item.Valid(fileLoader, token);
+                    if (status > FileCheckStatus.Normal)
                     {
-                        return false;
+                        return status;
                     }
                 }
             }
-            return isMatch;
+            return isMatch ? FileCheckStatus.Normal : FileCheckStatus.Pass;
         }
     }
 }

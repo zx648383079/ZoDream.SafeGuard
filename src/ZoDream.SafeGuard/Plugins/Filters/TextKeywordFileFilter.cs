@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using ZoDream.SafeGuard.Finders;
 
 namespace ZoDream.SafeGuard.Plugins.Filters
@@ -30,7 +26,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
         private readonly int _length = 0;
 
         private readonly IList<string> _lines = [];
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             if (_lines.Count == 0)
             {

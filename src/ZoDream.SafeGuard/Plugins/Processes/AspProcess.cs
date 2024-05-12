@@ -1,26 +1,26 @@
-﻿using ZoDream.SafeGuard.Finders;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ZoDream.SafeGuard.Finders;
 using ZoDream.SafeGuard.Plugins.Filters;
 
 namespace ZoDream.SafeGuard.Plugins.Processes
 {
-    public class PhpProcess : IFileProcess
+    public class AspProcess : IFileProcess
     {
         public string[] LoadExtension()
         {
-            return ["php", "phtml"];
+            return ["asp", "aspx"];
         }
 
         public IFileFilter[] LoadFilters()
         {
             return [
-                new TextKeywordFileFilter("eval(")
-                {
+                new TextKeywordFileFilter("Request.BinaryRead(") {
                     VaildStatus = Models.FileCheckStatus.Poisoning,
-                },
-                new Base64FileFilter()
-                {
-                    VaildStatus = Models.FileCheckStatus.Poisoning,
-                },
+                }
             ];
         }
 

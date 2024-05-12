@@ -1,76 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading;
+using ZoDream.SafeGuard.Finders;
 
 namespace ZoDream.SafeGuard.Plugins.Filters
 {
-    public abstract class ByteFileFilter
+    public class ByteFileFilter(StreamFinder finder) : BaseFileFilter
     {
-
-        protected List<ByteVerifyData> VerifyItems { get; set; } = new();
-
-        protected abstract long VerifyLength { get; }
-
-        protected ByteVerifyData[] ValidItems => VerifyItems.Where(i => i.IsMatch).ToArray();
-        protected int ValidCount => ValidItems.Length;
-
-        public void Verify(long position, byte code)
+        public ByteFileFilter(string[][] items): this(new StreamFinder(items))
         {
-            if (IsInvalidByte(code))
-            {
-                return;
-            }
-            for (int i = VerifyItems.Count - 1; i >= 0; i--)
-            {
-                var item = VerifyItems[i];
-                if (item.IsMatch)
-                {
-                    continue;
-                }
-                if (!Verify(code, item.Length))
-                {
-                    VerifyItems.RemoveAt(i);
-                    continue;
-                }
-                item.Length++;
-                if (item.Length == VerifyLength)
-                {
-                    item.End = position;
-                    item.IsMatch = true;
-                }
-            }
-            if (!Verify(code, 0L))
-            {
-                return;
-            }
-            VerifyItems.Add(new ByteVerifyData()
-            {
-                Begin = position,
-                Length = 1
-            });
+            
         }
 
+        private readonly StreamFinder _finder = finder;
 
-
-        protected abstract byte GetByte(long index);
-        protected abstract bool IsInvalidByte(byte code);
-
-        protected virtual bool Verify(byte code, long index)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
-            return GetByte(index) == code;
+            _finder.IsMatchFirst = true;
+            var reader = fileInfo.Reader;
+            reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+            return _finder.MatchFile(reader.BaseStream);
         }
-    }
-
-    public class ByteVerifyData
-    {
-        public long Begin { get; set; }
-
-        public long End { get; set; }
-
-        public long Length { get; set; }
-
-        public bool IsMatch { get; set; }
     }
 }

@@ -267,6 +267,7 @@
                             <TextBlock Text="{Binding Status,Converter={StaticResource StatusIconCvt}}"
                                Foreground="{Binding Status,Converter={StaticResource StatusColorCvt}}"
                                FontFamily="{StaticResource IconFontFamily}"
+                               ToolTip="{Binding Message}"
                                Grid.Column="1"
                                Grid.RowSpan="2"
                                HorizontalAlignment="Center" 

@@ -8,9 +8,7 @@ namespace ZoDream.SafeGuard.Plugins.Filters
 {
     public class MLFileFilter(Train nn) : BaseFileFilter
     {
-        private readonly Train _nn = nn;
-
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             throw new NotImplementedException();
         }

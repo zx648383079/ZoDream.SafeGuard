@@ -14,6 +14,9 @@ namespace ZoDream.SafeGuard.Plugins.Processes
         {
             return [
                 new TextRegexFileFilter(@"[\[\(]['""](\\x[\da-f]{2}|\\b\d)+['""][\]\)]")
+                {
+                    VaildStatus = Models.FileCheckStatus.Poisoning,
+                }
             ];
         }
 

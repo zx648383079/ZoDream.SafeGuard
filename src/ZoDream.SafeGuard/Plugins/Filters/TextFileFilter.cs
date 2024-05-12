@@ -26,8 +26,8 @@ namespace ZoDream.SafeGuard.Plugins.Filters
 
         private readonly int _length = 0;
 
-        private readonly IList<string> _lines = new List<string>();
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        private readonly IList<string> _lines = [];
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             if (_lines.Count == 0)
             {

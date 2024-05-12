@@ -10,6 +10,7 @@ namespace ZoDream.SafeGuard.Finders
 {
     public delegate void FinderLogEventHandler(string fileName);
 
+    public delegate void FinderFilterEventHandler(FileInfo item, FileCheckStatus status);
     public delegate void FinderEventHandler(FileInfo item);
     public delegate void FinderFinishedEventHandler();
 }

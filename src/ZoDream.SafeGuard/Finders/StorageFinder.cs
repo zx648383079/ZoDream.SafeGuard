@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using ZoDream.SafeGuard.Models;
 
 namespace ZoDream.SafeGuard.Finders
 {
@@ -11,8 +12,6 @@ namespace ZoDream.SafeGuard.Finders
         private CancellationTokenSource? _cancelTokenSource;
 
         public event FinderLogEventHandler? FileChanged;
-
-        public event FinderEventHandler? FoundChanged;
 
         public event FinderFinishedEventHandler? Finished;
 
@@ -92,18 +91,22 @@ namespace ZoDream.SafeGuard.Finders
             CheckFile(file, token);
         }
 
-        private void CheckFile(FileInfo file, CancellationToken token = default)
+        protected void OnCheckingFile(FileInfo file)
+        {
+            FileChanged?.Invoke(file.FullName);
+        }
+
+        protected virtual void CheckFile(FileInfo file, CancellationToken token = default)
         {
             if (token.IsCancellationRequested)
             {
                 return;
             }
-            FileChanged?.Invoke(file.FullName);
+            OnCheckingFile(file);
             if (!IsValidFile(file, token))
             {
                 return;
             }
-            FoundChanged?.Invoke(file);
             ProcessFile(file, token);
         }
 

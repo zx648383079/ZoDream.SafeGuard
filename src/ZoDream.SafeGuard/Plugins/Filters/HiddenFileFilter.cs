@@ -9,19 +9,12 @@ using ZoDream.SafeGuard.Finders;
 
 namespace ZoDream.SafeGuard.Plugins.Filters
 {
-    public class HiddenFileFilter : BaseFileFilter
+    public class HiddenFileFilter(bool ignore = false) : BaseFileFilter
     {
-        public HiddenFileFilter(bool ignore = false)
-        {
-            _ignore = ignore;
-        }
-
-        private readonly bool _ignore;
-
-        public override bool Valid(FileLoader fileInfo, CancellationToken token)
+        public override bool IsValid(FileLoader fileInfo, CancellationToken token)
         {
             var res = fileInfo.File.Attributes == FileAttributes.Hidden;
-            return _ignore ? !res : res;
+            return ignore ? !res : res;
         }
     }
 }
