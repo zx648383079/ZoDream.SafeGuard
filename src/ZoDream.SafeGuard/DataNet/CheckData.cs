@@ -1,10 +1,5 @@
 ﻿using Microsoft.ML.Data;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZoDream.SafeGuard.DataNet
 {
@@ -19,6 +14,6 @@ namespace ZoDream.SafeGuard.DataNet
 
         [Column("0")]
         [ColumnName("Label")]
-        public bool Label { get; set; }
+        public string Label { get; set; } = string.Empty;
     }
 }

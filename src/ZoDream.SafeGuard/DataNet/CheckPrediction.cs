@@ -2,6 +2,6 @@
 {
     public class CheckPrediction
     {
-        public bool PredictedLabel { get; set; }
+        public string PredictedLabel { get; set; } = string.Empty;
     }
 }
