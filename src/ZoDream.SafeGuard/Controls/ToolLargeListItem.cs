@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZoDream.SafeGuard.Models;
+using ZoDream.Shared.Models;
 using ZoDream.Shared.Routes;
 using ZoDream.Shared.Controls;
 

@@ -5,13 +5,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using ZoDream.SafeGuard.Extensions;
-using ZoDream.SafeGuard.Finders;
-using ZoDream.SafeGuard.Models;
-using ZoDream.SafeGuard.Plugins;
+using ZoDream.Shared.Extensions;
+using ZoDream.Shared.Finders;
+using ZoDream.Shared.Models;
+using ZoDream.Shared.Plugins;
 using ZoDream.Shared.Routes;
 using ZoDream.Shared.Storage;
-using ZoDream.Shared.ViewModel;
+using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.SafeGuard.ViewModels
 {
@@ -29,10 +29,6 @@ namespace ZoDream.SafeGuard.ViewModels
             StopCommand = new RelayCommand(TapStop);
             DragMatchCommand = new RelayCommand(OnDragMatch);
             SeeFileCommand = new RelayCommand(TapSeeFile);
-            Finder = new TransformFinder();
-            Finder.Finished += Finder_Finished;
-            Finder.FileChanged += Finder_FileChanged;
-            Finder.FoundChanged += Finder_FoundChanged;
         }
         public ITransformFinder Finder { get; private set; }
 
@@ -248,10 +244,20 @@ namespace ZoDream.SafeGuard.ViewModels
                 var transformer = Activator.CreateInstance(o.Target);
                 if (transformer is IFileTransformer target)
                 {
+                    Finder = new TransformFinder();
+                    Finder.Finished += Finder_Finished;
+                    Finder.FileChanged += Finder_FileChanged;
+                    Finder.FoundChanged += Finder_FoundChanged;
                     Finder.Clear();
                     Finder.Add(
                         target
                     );
+                } else if (transformer is ITransformFinder finder)
+                {
+                    Finder = finder;
+                    Finder.Finished += Finder_Finished;
+                    Finder.FileChanged += Finder_FileChanged;
+                    Finder.FoundChanged += Finder_FoundChanged;
                 }
             }
             

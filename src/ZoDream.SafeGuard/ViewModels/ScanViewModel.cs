@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using ZoDream.SafeGuard.Extensions;
-using ZoDream.SafeGuard.Finders;
-using ZoDream.SafeGuard.Models;
-using ZoDream.SafeGuard.Plugins.Filters;
-using ZoDream.SafeGuard.Plugins.Processes;
-using ZoDream.Shared.ViewModel;
+using ZoDream.Shared.Extensions;
+using ZoDream.Shared.Finders;
+using ZoDream.Shared.Models;
+using ZoDream.Shared.Plugins.Filters;
+using ZoDream.Shared.Plugins.Processes;
+using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.SafeGuard.ViewModels
 {
@@ -251,13 +251,14 @@ namespace ZoDream.SafeGuard.ViewModels
                     ProcessItems = [
                         new JavascriptProcess(), new PhpProcess(),
                         new AspProcess(), new MediaProcess(),
+                        new TxtProcess(),
                     ]
                 };
             }
             var finder = new FilterFinder();
             if (ScanType > 2)
             {
-                finder.FilterItems = [new MLFileFilter(new DataNet.Train())];
+                finder.FilterItems = [new MLFileFilter(new DataNet.Prediction())];
                 return finder;
             }
             finder.FilterItems = [];

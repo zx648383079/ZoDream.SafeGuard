@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using ZoDream.SafeGuard.Models;
-using ZoDream.Shared.ViewModel;
-using ZoDream.SafeGuard.Extensions;
+using ZoDream.Shared.Models;
+using ZoDream.Shared.ViewModels;
+using ZoDream.Shared.Extensions;
 
 namespace ZoDream.SafeGuard.ViewModels
 {

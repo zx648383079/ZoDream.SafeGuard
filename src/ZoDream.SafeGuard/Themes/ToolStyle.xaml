@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ctl="clr-namespace:ZoDream.SafeGuard.Controls"
-                    xmlns:mdl="clr-namespace:ZoDream.SafeGuard.Models">
+                    xmlns:mdl="clr-namespace:ZoDream.Shared.Models;assembly=ZoDream.Shared">
 
     <Style x:Key="ListItemStyle" TargetType="ListBoxItem">
         <Setter Property="Template">

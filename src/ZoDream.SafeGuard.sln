@@ -5,9 +5,13 @@ VisualStudioVersion = 17.6.33606.364
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoDream.SafeGuard", "ZoDream.SafeGuard\ZoDream.SafeGuard.csproj", "{0200F1CF-F33F-49D8-B440-1DAF720207E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoDream.Shared", "..\shared\ZoDream.Shared\ZoDream.Shared.csproj", "{D5ABF42C-6A45-416D-B64D-2ECBA198081D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoDream.Shared.Controls", "..\shared\ZoDream.Shared.Controls\ZoDream.Shared.Controls.csproj", "{E052D38B-38CC-4F2B-A36D-9C366C08164B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoDream.Tests", "ZoDream.Tests\ZoDream.Tests.csproj", "{F4D487CA-A45B-4154-8780-D5436316A4CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZoDream.Shared", "ZoDream.Shared\ZoDream.Shared.csproj", "{8B9FC505-62AB-47B7-9FC9-61EB88E986C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoDream.Shared.Encryptors", "ZoDream.Shared.Encryptors\ZoDream.Shared.Encryptors.csproj", "{DE9E55E4-EF26-41A5-872A-B5C9C0EE40B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +23,22 @@ Global
 		{0200F1CF-F33F-49D8-B440-1DAF720207E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0200F1CF-F33F-49D8-B440-1DAF720207E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0200F1CF-F33F-49D8-B440-1DAF720207E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5ABF42C-6A45-416D-B64D-2ECBA198081D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5ABF42C-6A45-416D-B64D-2ECBA198081D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5ABF42C-6A45-416D-B64D-2ECBA198081D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5ABF42C-6A45-416D-B64D-2ECBA198081D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E052D38B-38CC-4F2B-A36D-9C366C08164B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E052D38B-38CC-4F2B-A36D-9C366C08164B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E052D38B-38CC-4F2B-A36D-9C366C08164B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E052D38B-38CC-4F2B-A36D-9C366C08164B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4D487CA-A45B-4154-8780-D5436316A4CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D487CA-A45B-4154-8780-D5436316A4CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4D487CA-A45B-4154-8780-D5436316A4CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4D487CA-A45B-4154-8780-D5436316A4CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B9FC505-62AB-47B7-9FC9-61EB88E986C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B9FC505-62AB-47B7-9FC9-61EB88E986C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B9FC505-62AB-47B7-9FC9-61EB88E986C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B9FC505-62AB-47B7-9FC9-61EB88E986C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE9E55E4-EF26-41A5-872A-B5C9C0EE40B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9E55E4-EF26-41A5-872A-B5C9C0EE40B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9E55E4-EF26-41A5-872A-B5C9C0EE40B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9E55E4-EF26-41A5-872A-B5C9C0EE40B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

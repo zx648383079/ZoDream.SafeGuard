@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZoDream.SafeGuard.Models;
-using ZoDream.SafeGuard.Plugins.Transformers;
-using ZoDream.Shared.ViewModel;
+using ZoDream.Shared.Models;
+using ZoDream.Shared.Plugins.Transformers;
+using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.SafeGuard.ViewModels
 {
@@ -29,6 +29,10 @@ namespace ZoDream.SafeGuard.ViewModels
                     new ToolItem("TXT精校", "\uE77C", "tool/finder")
                     {
                         Target = typeof(TxtCalibrateTransformer)
+                    },
+                    new ToolItem("Nas安全文件名", "\uE8AC", "tool/finder")
+                    {
+                        Target = typeof(NasRenameTransformer)
                     },
                 ]
             });

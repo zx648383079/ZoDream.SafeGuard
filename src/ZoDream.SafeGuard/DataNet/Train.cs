@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ZoDream.SafeGuard.Models;
+using ZoDream.Shared.Finders;
+using ZoDream.Shared.Models;
 
 namespace ZoDream.SafeGuard.DataNet
 {
@@ -25,7 +26,7 @@ namespace ZoDream.SafeGuard.DataNet
             // 判断文件是否存在
             // 生成不重复文件名
             var name = Path.GetFileNameWithoutExtension(fileName);
-            var target = Path.Combine(InputFolder, Enum.GetName(status)!, $"{name}.{GetExtension(fileName)}");
+            var target = Path.Combine(InputFolder, Enum.GetName(status)!, $"{name}.{StorageFinder.GetExtension(fileName)}");
             File.WriteAllText(target, ReadFile(fileName), Encoding);
         }
 
@@ -79,7 +80,7 @@ namespace ZoDream.SafeGuard.DataNet
                     items.Add(new CheckData()
                     {
                         Label = folder.Name,
-                        Extension = GetExtension(file),
+                        Extension = StorageFinder.GetExtension(file),
                         Text = ReadFile(file),
                     });
                 }
@@ -96,17 +97,6 @@ namespace ZoDream.SafeGuard.DataNet
         private string ReadFile(string fileName)
         {
             return File.ReadAllText(fileName, Encoding);
-        }
-
-        public static string GetExtension(string fileName)
-        {
-            var extension = Path.GetExtension(fileName);
-            return extension.Length > 0 ? extension[1..].ToLower() : string.Empty;
-        }
-
-        public static string GetExtension(FileInfo file)
-        {
-            return file.Extension.Length > 0 ? file.Extension[1..].ToLower() : string.Empty;
         }
     }
 }

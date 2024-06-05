@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
-using ZoDream.SafeGuard.Models;
+using ZoDream.Shared.Models;
 
 namespace ZoDream.SafeGuard.Converters
 {
