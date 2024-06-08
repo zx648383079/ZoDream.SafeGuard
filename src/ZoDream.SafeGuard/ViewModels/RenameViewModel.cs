@@ -360,7 +360,7 @@ namespace ZoDream.SafeGuard.ViewModels
                 item.Index = ++i;
                 FileItems.Add(item);
             }
-            if (OrderRule.Contains("{no}"))
+            if (OrderRule.Contains("{no}", StringComparison.OrdinalIgnoreCase))
             {
                 RefreshRename();
             }
@@ -392,7 +392,8 @@ namespace ZoDream.SafeGuard.ViewModels
                 return name;
             }
             var no = (index + OrderBegin - 1).ToString().PadLeft(OrderPad, '0');
-            return OrderRule.Replace("{no}", no).Replace("{name}", name);
+            return OrderRule.Replace("{no}", no, StringComparison.OrdinalIgnoreCase)
+                .Replace("{name}", name, StringComparison.OrdinalIgnoreCase);
         }
 
         private (string, string) UseReplace(RenameFileItemViewModel item)
@@ -460,7 +461,7 @@ namespace ZoDream.SafeGuard.ViewModels
             {
                 FileItems[i].Index = i + 1;
             }
-            if (OrderRule.Contains("{no}"))
+            if (OrderRule.Contains("{no}", StringComparison.OrdinalIgnoreCase))
             {
                 RefreshRename();
             }
