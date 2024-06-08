@@ -30,7 +30,7 @@ namespace ZoDream.SafeGuard.ViewModels
             DragMatchCommand = new RelayCommand(OnDragMatch);
             SeeFileCommand = new RelayCommand(TapSeeFile);
         }
-        public ITransformFinder Finder { get; private set; }
+        public ITransformFinder? Finder { get; private set; }
 
         private int step = 0;
 
@@ -149,7 +149,7 @@ namespace ZoDream.SafeGuard.ViewModels
 
         private void TapTestExecute(object? _)
         {
-            TestResult = Finder.Transform(TestText);
+            TestResult = Finder!.Transform(TestText);
         }
 
         private void TapSelectMatch(object? _)
@@ -183,12 +183,12 @@ namespace ZoDream.SafeGuard.ViewModels
             Step = 1;
             IsPaused = false;
             TransformItems.Clear();
-            Finder.Start(MatchFileItems.Select(i => i.FileName).ToArray());
+            Finder?.Start(MatchFileItems.Select(i => i.FileName).ToArray());
         }
 
         private void TapStop(object? _)
         {
-            Finder.Stop();
+            Finder?.Stop();
             IsPaused = true;
         }
 
@@ -199,20 +199,29 @@ namespace ZoDream.SafeGuard.ViewModels
 
         private void TapSeeFile(object? arg)
         {
+            var fileName = string.Empty;
             if (arg is FileInfoItem o)
             {
-                Process.Start("explorer", $"/select,{o.FileName}");
+                fileName = o.FileName;
             } else if (arg is FileTransformItem t)
             {
-                Process.Start("explorer", $"/select,{t.FileName}");
+                fileName = t.FileName;
             }
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+            if (!File.Exists(fileName)) {
+                fileName = Path.GetDirectoryName(fileName);
+            }
+            Process.Start("explorer", $"/select,{fileName}");
         }
 
 
-        private void Finder_FoundChanged(FileInfo item)
+        private void Finder_FoundChanged(FileInfoItem item)
         {
             App.Current.Dispatcher.Invoke(() => {
-                TransformItems.Add(new FileTransformItem(item.Name, item.FullName, FileTransformStatus.Done));
+                TransformItems.Add(new FileTransformItem(item.Name, item.FileName, FileTransformStatus.Done));
             });
         }
 

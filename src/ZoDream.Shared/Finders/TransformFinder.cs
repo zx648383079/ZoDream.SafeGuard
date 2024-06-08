@@ -59,6 +59,7 @@ namespace ZoDream.Shared.Finders
             {
                 return Task.CompletedTask;
             }
+            FoundChanged?.Invoke(new Models.FileInfoItem(fileInfo));
             var fs = new FileStream(fileInfo.FullName, FileMode.OpenOrCreate);
             var content = ReadText(fs, IsCharsetFile(fileInfo), out var encoding);
             var isUpdated = false;

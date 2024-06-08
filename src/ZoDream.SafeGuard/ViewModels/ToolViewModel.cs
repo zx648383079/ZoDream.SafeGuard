@@ -30,7 +30,7 @@ namespace ZoDream.SafeGuard.ViewModels
                     {
                         Target = typeof(TxtCalibrateTransformer)
                     },
-                    new ToolItem("Nas安全文件名", "\uE8AC", "tool/finder")
+                    new ToolItem("文件重命名", "\uE8AC", "tool/rename")
                     {
                         Target = typeof(NasRenameTransformer)
                     },
@@ -39,7 +39,7 @@ namespace ZoDream.SafeGuard.ViewModels
         }
 
 
-        private ObservableCollection<ToolGroupItem> items = new();
+        private ObservableCollection<ToolGroupItem> items = [];
 
         public ObservableCollection<ToolGroupItem> Items {
             get => items;
