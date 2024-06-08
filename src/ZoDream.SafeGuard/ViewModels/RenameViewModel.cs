@@ -58,7 +58,7 @@ namespace ZoDream.SafeGuard.ViewModels
             set => Set(ref _replaceMatchType, value);
         }
 
-        private string[] _replaceMatchRule = ["字符替换", "正则替换"];
+        private string[] _replaceMatchRule = ["字符替换", "正则替换", "单字符替换"];
 
         public string[] ReplaceMatchRule {
             get => _replaceMatchRule;
@@ -76,7 +76,13 @@ namespace ZoDream.SafeGuard.ViewModels
 
         public int ReplaceRuleIndex {
             get => _replaceRuleIndex;
-            set => Set(ref _replaceRuleIndex, value);
+            set {
+                Set(ref _replaceRuleIndex, value);
+                if (value == 2 && string.IsNullOrWhiteSpace(ReplaceMatch))
+                {
+                    ReplaceMatch = "@#$\\/'\"|:;*?<>";
+                }
+            }
         }
 
         private string _replaceMatch = string.Empty;
@@ -297,6 +303,9 @@ namespace ZoDream.SafeGuard.ViewModels
                         {
                             File.Move(item.FileName, fileName);
                         }
+                        item.FileName = fileName;
+                        item.Name = item.ReplaceName;
+                        item.Extension = Path.GetExtension(item.FileName);
                     }
                     catch (Exception ex)
                     {
@@ -360,14 +369,19 @@ namespace ZoDream.SafeGuard.ViewModels
         {
             foreach (var item in FileItems)
             {
-                var (name, extension) = UseReplace(item);
-                if (!string.IsNullOrWhiteSpace(extension))
-                {
-                    extension = ExtensionUpper ? extension.ToUpper() : extension.ToLower();
-                }
-                name = UseOrderNo(name, item.Index);
-                item.ReplaceName = name + extension;
+                RefreshRename(item);
             }
+        }
+
+        private void RefreshRename(RenameFileItemViewModel item)
+        {
+            var (name, extension) = UseReplace(item);
+            if (!string.IsNullOrWhiteSpace(extension))
+            {
+                extension = ExtensionUpper ? extension.ToUpper() : extension.ToLower();
+            }
+            name = UseOrderNo(name, item.Index);
+            item.ReplaceName = name + extension;
         }
 
         private string UseOrderNo(string name, int index)
@@ -409,13 +423,29 @@ namespace ZoDream.SafeGuard.ViewModels
 
         private string UseReplace(string name)
         {
-            if (string.IsNullOrEmpty(name) || string.IsNullOrWhiteSpace(ReplaceMatch))
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(ReplaceMatch))
             {
                 return name;
             }
             try
             {
-                return ReplaceRuleIndex > 0 ? Regex.Replace(name, ReplaceMatch, ReplaceValue) : name.Replace(ReplaceMatch, ReplaceValue);
+                switch (ReplaceRuleIndex)
+                {
+                    case 2:
+                        var end = ReplaceValue.Length > 0 ?
+                            ReplaceValue[^1..] : string.Empty;
+                        for (var i = 0; i < ReplaceMatch.Length; i++)
+                        {
+                            name = name.Replace(ReplaceMatch.Substring(i, 1), 
+                                ReplaceValue.Length > i ? 
+                                ReplaceValue.Substring(i, 1) : end);
+                        }
+                        return name;
+                    case 1:
+                        return Regex.Replace(name, ReplaceMatch, ReplaceValue);
+                    default:
+                        return name.Replace(ReplaceMatch, ReplaceValue);
+                }
             }
             catch (Exception)
             {
@@ -440,10 +470,12 @@ namespace ZoDream.SafeGuard.ViewModels
             var i = FileItems.Count;
             foreach (var item in items)
             {
-                FileItems.Add(new RenameFileItemViewModel(item)
+                var target = new RenameFileItemViewModel(item)
                 {
                     Index = i++
-                });
+                };
+                RefreshRename(target);
+                FileItems.Add(target);
             }
         }
     }

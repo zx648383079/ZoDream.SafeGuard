@@ -103,6 +103,7 @@
                     <MenuItem Header="置底" Command="{Binding MoveLastCommand}"/>
                     <Separator/>
                     <MenuItem Header="移除" Command="{Binding RemoveCommand}"/>
+                    <MenuItem Header="添加文件" Command="{Binding AddFileCommand}"/>
                     <MenuItem Header="清空" Command="{Binding ClearCommand}"/>
                     <MenuItem Header="排序">
                         <MenuItem Header="文件名排序" Command="{Binding OrderCommand}" CommandParameter="0"/>
@@ -136,7 +137,7 @@
                         <ComboBox ItemsSource="{Binding ReplaceMatchType}" SelectedIndex="{Binding ReplaceTypeIndex,Mode=TwoWay}" Grid.Column="1"/>
                         <ComboBox ItemsSource="{Binding ReplaceMatchRule}" SelectedIndex="{Binding ReplaceRuleIndex,Mode=TwoWay}" Grid.Column="2"/>
                         <TextBox Text="{Binding ReplaceMatch,Mode=TwoWay}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" MaxLines="1"/>
-                        <TextBox Text="{Binding ReplaceValue,Mode=TwoWay}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" MaxLines="1"/>
+                        <TextBox Text="{Binding ReplaceValue,Mode=TwoWay}" ToolTip="单字符替换模式下，取最后一个字符作为默认替换字符" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" MaxLines="1"/>
                     </Grid>
                 </GroupBox>
                 <GroupBox Header="序号">
@@ -169,7 +170,17 @@
                     </Grid>
                 </GroupBox>
             </StackPanel>
-            <Button Content="{Binding BtnText}" Command="{Binding StartCommand}" Grid.Row="1"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="40"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="{Binding BtnText}" Command="{Binding StartCommand}"/>
+                <Button Content="&#xE710;" Command="{Binding AddFileCommand}" 
+                        IsEnabled="{Binding IsPaused}"
+                        Style="{StaticResource IconBtn}"
+                        Grid.Column="1"/>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

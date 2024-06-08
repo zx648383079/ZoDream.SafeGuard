@@ -7,9 +7,20 @@ namespace ZoDream.SafeGuard.ViewModels
 {
     public class RenameFileItemViewModel: BindableBase
     {
-        public string Name { get; set; }
+        private string _name = string.Empty;
 
-        public string FileName { get; set; }
+        public string Name {
+            get => _name;
+            set => Set(ref _name, value);
+        }
+
+        private string _fileName = string.Empty;
+
+        public string FileName {
+            get => _fileName;
+            set => Set(ref _fileName, value);
+        }
+
         /// <summary>
         /// 包含 .
         /// </summary>
