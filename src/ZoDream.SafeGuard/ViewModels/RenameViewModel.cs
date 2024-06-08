@@ -266,6 +266,7 @@ namespace ZoDream.SafeGuard.ViewModels
         private void TapClear(object? _)
         {
             FileItems.Clear();
+            _sortType = -1;
         }
         private void TapStart(object? _)
         {
@@ -356,7 +357,7 @@ namespace ZoDream.SafeGuard.ViewModels
             var i = 0;
             foreach (var item in items)
             {
-                item.Index = i++;
+                item.Index = ++i;
                 FileItems.Add(item);
             }
             if (OrderRule.Contains("{no}"))
@@ -390,7 +391,7 @@ namespace ZoDream.SafeGuard.ViewModels
             {
                 return name;
             }
-            var no = (index + OrderBegin).ToString().PadLeft(OrderPad, '0');
+            var no = (index + OrderBegin - 1).ToString().PadLeft(OrderPad, '0');
             return OrderRule.Replace("{no}", no).Replace("{name}", name);
         }
 
@@ -457,7 +458,7 @@ namespace ZoDream.SafeGuard.ViewModels
         {
             for (int i = 0; i < FileItems.Count; i++)
             {
-                FileItems[i].Index = i;
+                FileItems[i].Index = i + 1;
             }
             if (OrderRule.Contains("{no}"))
             {
@@ -472,7 +473,7 @@ namespace ZoDream.SafeGuard.ViewModels
             {
                 var target = new RenameFileItemViewModel(item)
                 {
-                    Index = i++
+                    Index = ++i
                 };
                 RefreshRename(target);
                 FileItems.Add(target);
