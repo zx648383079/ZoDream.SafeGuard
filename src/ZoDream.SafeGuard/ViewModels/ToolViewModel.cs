@@ -18,7 +18,7 @@ namespace ZoDream.SafeGuard.ViewModels
             Items.Add(new ToolGroupItem("常用")
             {
                 Items = [ 
-                    new ToolItem("文件批量修改", "\uE13E", "tool/finder")
+                    new ToolItem("文件批量修改", "\uE932", "tool/finder")
                     {
                         Target = typeof(PHPTypeTransformer)
                     },
@@ -29,6 +29,10 @@ namespace ZoDream.SafeGuard.ViewModels
                     new ToolItem("TXT精校", "\uE77C", "tool/finder")
                     {
                         Target = typeof(TxtCalibrateTransformer)
+                    },
+                    new ToolItem("安全文件名", "\uEC77", "tool/finder")
+                    {
+                        Target = typeof(NasRenameTransformer)
                     },
                     new ToolItem("文件重命名", "\uE8AC", "tool/rename")
                     {

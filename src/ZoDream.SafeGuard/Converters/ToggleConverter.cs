@@ -32,7 +32,7 @@ namespace ZoDream.Shared.Converters
                 {
                     return i > 0;
                 }
-                return string.IsNullOrWhiteSpace(value.ToString());
+                return !string.IsNullOrWhiteSpace(value.ToString());
             }
             if (parameter is bool b)
             {

@@ -15,11 +15,23 @@ namespace ZoDream.Shared.Models
 
         public string FileName { get; set; }
 
-        private FileTransformStatus status;
+        public bool IsFolder { get; set; }
+
+        private string _renameName = string.Empty;
+        /// <summary>
+        /// 是否重改变了文件名
+        /// </summary>
+        public string RenameName {
+            get => _renameName;
+            set => Set(ref _renameName, value);
+        }
+
+
+        private FileTransformStatus _status;
 
         public FileTransformStatus Status {
-            get => status;
-            set => Set(ref status, value);
+            get => _status;
+            set => Set(ref _status, value);
         }
 
         public FileTransformItem(string fileName)
@@ -33,6 +45,18 @@ namespace ZoDream.Shared.Models
             Name = name;
             FileName = fileName;
             Status = status;
+        }
+
+        public FileTransformItem(FileInfoItem file, FileTransformStatus status)
+        {
+            Name = file.Name;
+            FileName = file.FileName;
+            Status = status;
+            IsFolder = file.IsFolder;
+            if (file is RenameFileItem o)
+            {
+                RenameName = o.RenameName;
+            }
         }
     }
 }

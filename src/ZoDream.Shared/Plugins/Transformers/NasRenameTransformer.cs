@@ -7,12 +7,14 @@ namespace ZoDream.Shared.Plugins.Transformers
     /// <summary>
     /// Nas安全文件名修改 
     /// </summary>
-    public partial class NasRenameTransformer: ITransformFinder
+    public partial class NasRenameTransformer: ITransformFinder, IFinderPreview
     {
         private CancellationTokenSource? _cancelTokenSource;
         public event FinderEventHandler? FoundChanged;
         public event FinderLogEventHandler? FileChanged;
         public event FinderFinishedEventHandler? Finished;
+
+        public bool IsPreview { get; set; }
 
         public void Add(IFileTransformer transformer)
         {
@@ -47,10 +49,10 @@ namespace ZoDream.Shared.Plugins.Transformers
 
         public string Transform(string content, CancellationToken token = default)
         {
-            return Transform(content);
+            return TransformTo(content);
         }
 
-        public string Transform(string content)
+        public string TransformTo(string content)
         {
             content = UnsafeFileRegex().Replace(content, "");
             return string.IsNullOrWhiteSpace(content) ? "undefined" : content;
@@ -98,25 +100,30 @@ namespace ZoDream.Shared.Plugins.Transformers
         private void CheckFolder(DirectoryInfo folder, CancellationToken token)
         {
             FileChanged?.Invoke(folder.FullName);
-            if (!IsValidFile(folder))
+            if (!IsValidFile(folder, token))
             {
                 EachFiles(folder, token);
                 return;
             }
-            var target = TryCreateFolder(folder.Parent!.FullName, Transform(folder.Name));
-            FoundChanged?.Invoke(new Models.FileInfoItem(folder)
+            var (target, name) = TryCreateFolder(folder.Parent!.FullName, TransformTo(folder.Name));
+            var arg = new Models.RenameFileItem(folder)
             {
-                FileName = target,
-            });
-            try
+                RenameName = name,
+            };
+            if (!IsPreview)
             {
-                folder.MoveTo(target);
+                try
+                {
+                    folder.MoveTo(target);
+                    arg.FileName = target;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            EachFiles(new DirectoryInfo(target), token);
+            FoundChanged?.Invoke(arg);
+            EachFiles(new DirectoryInfo(arg.FileName), token);
         }
 
         private void EachFiles(DirectoryInfo folder, CancellationToken token = default)
@@ -159,29 +166,35 @@ namespace ZoDream.Shared.Plugins.Transformers
                 return;
             }
             FileChanged?.Invoke(file.FullName);
-            if (!IsValidFile(file))
+            if (!IsValidFile(file, token))
             {
                 return;
             }
-            var target = TryCreateFile(file.DirectoryName!, Transform(file.Name));
-            FoundChanged?.Invoke(new Models.FileInfoItem(file)
+            var (target, name) = TryCreateFile(file.DirectoryName!, TransformTo(file.Name));
+            var arg = new Models.RenameFileItem(file)
             {
-                FileName = target,
-            });
-            try
+                RenameName = name,
+            };
+            if (!IsPreview)
             {
-                file.MoveTo(target);
+                try
+                {
+                    file.MoveTo(target);
+                    arg.FileName = target;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
+            FoundChanged?.Invoke(arg);
         }
 
-        private string TryCreateFile(string folder, string name)
+        private (string, string) TryCreateFile(string folder, string name)
         {
             var fileName = Path.Combine(folder, name);
             var extension = string.Empty;
+            var rename = name;
             var j = name.IndexOf('.');
             if (j >= 0)
             {
@@ -191,20 +204,23 @@ namespace ZoDream.Shared.Plugins.Transformers
             var i = 0;
             while (File.Exists(fileName))
             {
-                fileName = Path.Combine(folder, $"{name}_{++i}{extension}");
+                rename = $"{name}_{++i}{extension}";
+                fileName = Path.Combine(folder, rename);
             }
-            return fileName;
+            return (fileName, rename);
         }
 
-        private string TryCreateFolder(string folder, string name)
+        private (string, string) TryCreateFolder(string folder, string name)
         {
             var fileName = Path.Combine(folder, name);
+            var rename = name;
             var i = 0;
             while (Directory.Exists(fileName))
             {
-                fileName = Path.Combine(folder, $"{name}_{++i}");
+                rename = $"{name}_{++i}";
+                fileName = Path.Combine(folder, rename);
             }
-            return fileName;
+            return (fileName, rename);
         }
 
         [GeneratedRegex(@"[@#\$\\/'""\|:;\*\?\<\>]+")]

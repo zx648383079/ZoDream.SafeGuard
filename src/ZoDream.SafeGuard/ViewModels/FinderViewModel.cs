@@ -71,7 +71,7 @@ namespace ZoDream.SafeGuard.ViewModels
             set => Set(ref toolName, value);
         }
 
-        private string toolDescription = "对选择的文件及文件夹进行查找，并根据需要修改文件的内容";
+        private string toolDescription = "对选择的文件及文件夹进行查找，并根据需要修改文件的内容/或文件名";
 
         public string ToolDescription {
             get => toolDescription;
@@ -128,7 +128,15 @@ namespace ZoDream.SafeGuard.ViewModels
 
         private void TapTest(object? _)
         {
-            Step = 2;
+            if (Finder is IFinderPreview o)
+            {
+                o.IsPreview = true;
+                Start();
+            } else
+            {
+                Step = 2;
+            }
+            
         }
 
         private async void TapDragTest(object? items)
@@ -180,10 +188,23 @@ namespace ZoDream.SafeGuard.ViewModels
 
         private void TapStart(object? _)
         {
+            if (Finder is IFinderPreview o)
+            {
+                o.IsPreview = false;
+            }
+            Start();
+        }
+
+        private void Start()
+        {
+            if (Finder is null)
+            {
+                return;
+            }
             Step = 1;
             IsPaused = false;
             TransformItems.Clear();
-            Finder?.Start(MatchFileItems.Select(i => i.FileName).ToArray());
+            Finder.Start(MatchFileItems.Select(i => i.FileName).ToArray());
         }
 
         private void TapStop(object? _)
@@ -220,8 +241,11 @@ namespace ZoDream.SafeGuard.ViewModels
 
         private void Finder_FoundChanged(FileInfoItem item)
         {
+            var isPreview = Finder is IFinderPreview o && o.IsPreview;
             App.Current.Dispatcher.Invoke(() => {
-                TransformItems.Add(new FileTransformItem(item.Name, item.FileName, FileTransformStatus.Done));
+                TransformItems.Add(new FileTransformItem(item,
+                    isPreview ? FileTransformStatus.Waiting : FileTransformStatus.Done
+                ));
             });
         }
 

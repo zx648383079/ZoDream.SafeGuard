@@ -108,23 +108,33 @@
                     <DataTemplate DataType="{x:Type mdl:FileTransformItem}">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
+                                <RowDefinition Height="auto"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding IsFolder,Converter={StaticResource FileTypeCvt}}" 
+                                Grid.RowSpan="3"
+                               Style="{StaticResource IconLabel}"/>
+                            <TextBlock Text="{Binding Name}" Grid.Column="1" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding RenameName}"  
+                                       Grid.Column="1" 
+                                       Grid.Row="1"
+                                       Foreground="LightGreen" FontWeight="Bold"
+                                       Visibility="{Binding RenameName, Converter={StaticResource ToggleCvt}}" VerticalAlignment="Center"/>
                             <TextBlock Text="{Binding FileName}" 
                                         VerticalAlignment="Center"
                                        Foreground="Gray"
-                                       Grid.Row="1"/>
+                                       Grid.Row="2" Grid.Column="1"/>
                             <TextBlock Text="{Binding Status,Converter={StaticResource StatusIconCvt}}"
                                        Foreground="{Binding Status,Converter={StaticResource StatusColorCvt}}"
                                        FontFamily="{StaticResource IconFontFamily}"
-                                       Grid.Column="1"
-                                       Grid.RowSpan="2"
+                                       Grid.Column="2"
+                                       Grid.RowSpan="3"
                                        HorizontalAlignment="Center" 
                                        VerticalAlignment="Center"
                                        FontSize="25" FontWeight="Bold"/>

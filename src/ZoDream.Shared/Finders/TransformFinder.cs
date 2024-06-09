@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+using ZoDream.Shared.Models;
 using ZoDream.Shared.Plugins;
 using ZoDream.Shared.Storage;
 

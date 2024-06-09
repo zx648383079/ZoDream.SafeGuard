@@ -1,4 +1,5 @@
-﻿using ZoDream.Shared.Plugins;
+﻿using ZoDream.Shared.Models;
+using ZoDream.Shared.Plugins;
 
 namespace ZoDream.Shared.Finders
 {
