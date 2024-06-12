@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using ZoDream.Shared.CodeScanner.Transformers;
 using ZoDream.Shared.Models;
 using ZoDream.Shared.Plugins.Transformers;
+using ZoDream.Shared.TextCalibrate.Transformers;
 using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.SafeGuard.ViewModels

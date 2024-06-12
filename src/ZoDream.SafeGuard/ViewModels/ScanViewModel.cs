@@ -4,11 +4,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using ZoDream.Shared.CodeScanner;
+using ZoDream.Shared.CodeScanner.Processes;
 using ZoDream.Shared.Extensions;
 using ZoDream.Shared.Finders;
+using ZoDream.Shared.Finders.Filters;
+using ZoDream.Shared.Interfaces;
 using ZoDream.Shared.Models;
-using ZoDream.Shared.Plugins.Filters;
-using ZoDream.Shared.Plugins.Processes;
 using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.SafeGuard.ViewModels
@@ -258,7 +260,7 @@ namespace ZoDream.SafeGuard.ViewModels
             var finder = new FilterFinder();
             if (ScanType > 2)
             {
-                finder.FilterItems = [new MLFileFilter(new DataNet.Prediction())];
+                finder.FilterItems = [new MLFileFilter(new CodePrediction())];
                 return finder;
             }
             finder.FilterItems = [];

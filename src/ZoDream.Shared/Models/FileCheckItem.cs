@@ -1,4 +1,5 @@
-﻿using ZoDream.Shared.ViewModels;
+﻿using System.IO;
+using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.Shared.Models
 {

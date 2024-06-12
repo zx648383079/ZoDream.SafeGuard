@@ -1,4 +1,6 @@
-﻿using ZoDream.Shared.Finders;
+﻿using System;
+using System.IO;
+using ZoDream.Shared.Finders;
 
 namespace ZoDream.Shared.Models
 {

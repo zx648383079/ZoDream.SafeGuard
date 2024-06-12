@@ -1,4 +1,11 @@
-﻿namespace ZoDream.Shared.Finders
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using System.IO;
+using System;
+using System.Linq;
+
+namespace ZoDream.Shared.Finders
 {
     public abstract class StorageFinder
     {
@@ -110,7 +117,7 @@
             return Task.CompletedTask;
         } 
 
-        private static void EachFiles(string folder, 
+        public static void EachFiles(string folder, 
             Action<IEnumerable<string>> success,
             CancellationToken token = default)
         {
@@ -130,6 +137,7 @@
 
             }
         }
+
 
         /// <summary>
         /// 获取拓展名，不包含 .

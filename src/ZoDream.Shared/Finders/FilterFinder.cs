@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using ZoDream.Shared.Interfaces;
 using ZoDream.Shared.Models;
-using ZoDream.Shared.Plugins;
 
 namespace ZoDream.Shared.Finders
 {

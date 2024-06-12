@@ -1,4 +1,6 @@
-﻿namespace ZoDream.Shared.Models
+﻿using System.IO;
+
+namespace ZoDream.Shared.Models
 {
     public class RenameFileItem : FileInfoItem
     {

@@ -1,4 +1,7 @@
-﻿namespace ZoDream.Shared.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace ZoDream.Shared.Models
 {
     public class ToolItem
     {

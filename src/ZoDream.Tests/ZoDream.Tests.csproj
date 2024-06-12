@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ZoDream.Shared.CodeScanner\ZoDream.Shared.CodeScanner.csproj" />
+    <ProjectReference Include="..\ZoDream.Shared.Encryptors\ZoDream.Shared.Encryptors.csproj" />
+    <ProjectReference Include="..\ZoDream.Shared.Plugins\ZoDream.Shared.Plugins.csproj" />
+    <ProjectReference Include="..\ZoDream.Shared.TextNetwork\ZoDream.Shared.TextNetwork.csproj" />
     <ProjectReference Include="..\ZoDream.Shared\ZoDream.Shared.csproj" />
   </ItemGroup>
 

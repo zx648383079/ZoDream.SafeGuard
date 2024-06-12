@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net8.0</TargetFramework>
+	  <Nullable>enable</Nullable>
+	  <LangVersion>12</LangVersion>
+	  <Authors>zodream</Authors>
+	  <Version>1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CHTCHSConv" Version="1.0.0" />
+    <PackageReference Include="Microsoft.ML" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZoDream.Shared\ZoDream.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
