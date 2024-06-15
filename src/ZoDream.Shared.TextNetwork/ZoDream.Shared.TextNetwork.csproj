@@ -6,11 +6,13 @@
 	  <LangVersion>12</LangVersion>
 	  <Authors>zodream</Authors>
 	  <Version>1.0</Version>
+	  <Platforms>x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CHTCHSConv" Version="1.0.0" />
     <PackageReference Include="Microsoft.ML" Version="3.0.1" />
+    <PackageReference Include="Microsoft.ML.TorchSharp" Version="0.21.1" />
   </ItemGroup>
 
   <ItemGroup>
