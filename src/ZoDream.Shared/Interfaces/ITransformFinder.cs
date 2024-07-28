@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using ZoDream.Shared.Finders;
-using ZoDream.Shared.Models;
 
 namespace ZoDream.Shared.Interfaces
 {

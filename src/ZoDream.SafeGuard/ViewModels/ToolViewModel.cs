@@ -35,6 +35,10 @@ namespace ZoDream.SafeGuard.ViewModels
                     {
                         Target = typeof(NasRenameTransformer)
                     },
+                    new ToolItem("Unity文件修复", "\uE90F", "tool/finder")
+                    {
+                        Target = typeof(UnityRepairTransformer)
+                    },
                 ]
             });
         }
