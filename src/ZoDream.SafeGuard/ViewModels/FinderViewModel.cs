@@ -256,6 +256,17 @@ namespace ZoDream.SafeGuard.ViewModels
             });
         }
 
+        private void Finder_FileProgress(string fileName, long current, long total)
+        {
+            if (total <= 0)
+            {
+                return;
+            }
+            App.Current.Dispatcher.Invoke(() => {
+                ProgressTip = $"[{current * 100 / total}%]{fileName}";
+            });
+        }
+
         private void Finder_Finished()
         {
             App.Current.Dispatcher.Invoke(() => {
@@ -292,8 +303,17 @@ namespace ZoDream.SafeGuard.ViewModels
                     Finder.FileChanged += Finder_FileChanged;
                     Finder.FoundChanged += Finder_FoundChanged;
                 }
+                if (transformer is IFinderProgress pro)
+                {
+                    pro.FileProgress += Finder_FileProgress;
+                }
+                Step = 0;
+                MatchFileItems.Clear();
+                TransformItems.Clear();
             }
             
         }
+
+        
     }
 }

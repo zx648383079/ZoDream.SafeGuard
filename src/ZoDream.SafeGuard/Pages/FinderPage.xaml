@@ -1,183 +1,234 @@
-﻿<Page x:Class="ZoDream.SafeGuard.Pages.FinderPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ZoDream.SafeGuard.Pages"
-      xmlns:sctl="clr-namespace:ZoDream.Shared.Controls;assembly=ZoDream.Shared.Controls"
-      xmlns:vm="clr-namespace:ZoDream.SafeGuard.ViewModels"
-      xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
-      xmlns:bhv="clr-namespace:ZoDream.SafeGuard.Behaviors"
-      xmlns:mdl="clr-namespace:ZoDream.Shared.Models;assembly=ZoDream.Shared"
-      mc:Ignorable="d" 
-      x:Name="root"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="FinderPage">
+﻿<Page
+    x:Class="ZoDream.SafeGuard.Pages.FinderPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:bhv="clr-namespace:ZoDream.SafeGuard.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ZoDream.SafeGuard.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mdl="clr-namespace:ZoDream.Shared.Models;assembly=ZoDream.Shared"
+    xmlns:sctl="clr-namespace:ZoDream.Shared.Controls;assembly=ZoDream.Shared.Controls"
+    xmlns:vm="clr-namespace:ZoDream.SafeGuard.ViewModels"
+    x:Name="root"
+    Title="FinderPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <Page.Resources>
-        <ResourceDictionary Source="/Themes/ScanStyle.xaml"/>
+        <ResourceDictionary Source="/Themes/ScanStyle.xaml" />
     </Page.Resources>
 
     <Page.DataContext>
-        <vm:FinderViewModel/>
+        <vm:FinderViewModel />
     </Page.DataContext>
 
     <Grid>
-        <!--文件夹选择-->
-        <Grid Visibility="{Binding Step, Converter={StaticResource ToggleCvt},ConverterParameter=0}">
+        <!--  文件夹选择  -->
+        <Grid Visibility="{Binding Step, Converter={StaticResource ToggleCvt}, ConverterParameter=0}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid Margin="10,20">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="40" />
+                    <RowDefinition />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding ToolName}" HorizontalAlignment="Center" 
-                           FontSize="20" FontWeight="Bold"/>
-                <TextBlock Text="{Binding ToolDescription}" 
-                         Grid.Row="1"
-                         TextWrapping="Wrap"
-                         Background="Transparent"/>
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <sctl:IconButton Icon="&#xE724;" Label="开始扫描" 
-                                     Command="{Binding StartCommand}"/>
-                    <sctl:IconButton Icon="&#xE114;" Label="测试预览" 
-                        Command="{Binding TestCommand}"/>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="{Binding ToolName}" />
+                <TextBlock
+                    Grid.Row="1"
+                    Background="Transparent"
+                    Text="{Binding ToolDescription}"
+                    TextWrapping="Wrap" />
+                <StackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <sctl:IconButton
+                        Command="{Binding StartCommand}"
+                        Icon="&#xE724;"
+                        Label="开始扫描" />
+                    <sctl:IconButton
+                        Command="{Binding TestCommand}"
+                        Icon="&#xE114;"
+                        Label="测试预览" />
                 </StackPanel>
             </Grid>
-            <GroupBox Grid.Column="1" Header="扫描文件/文件夹"
-              AllowDrop="true">
+            <GroupBox
+                Grid.Column="1"
+                AllowDrop="true"
+                Header="扫描文件/文件夹">
                 <Behaviors:Interaction.Behaviors>
-                    <bhv:DragFileBehavior Command="{Binding DragMatchCommand}"/>
+                    <bhv:DragFileBehavior Command="{Binding DragMatchCommand}" />
                 </Behaviors:Interaction.Behaviors>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="40"/>
+                        <RowDefinition />
+                        <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
-                    <ListBox ItemsSource="{Binding MatchFileItems}" 
-                         Background="Transparent" 
-                         BorderThickness="0">
+                    <ListBox
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ItemsSource="{Binding MatchFileItems}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button 
-                                        Command="{Binding ElementName=root, 
-                                            Path=DataContext.DeleteMatchCommand}"      
-                                            CommandParameter="{Binding}"
-                                            Content="&#xE106;" Style="{StaticResource IconBtn}"
-                                            ToolTip="删除" BorderThickness="0"/>
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}"></TextBlock>
+                                    <Button
+                                        BorderThickness="0"
+                                        Command="{Binding ElementName=root, Path=DataContext.DeleteMatchCommand}"
+                                        CommandParameter="{Binding}"
+                                        Content="&#xE106;"
+                                        Style="{StaticResource IconBtn}"
+                                        ToolTip="删除" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <Button Grid.Row="1" 
-                        Content="&#xE109;"
+                    <Button
+                        Grid.Row="1"
                         Command="{Binding SelectMatchCommand}"
-                        Style="{StaticResource IconBtn}"/>
+                        Content="&#xE109;"
+                        Style="{StaticResource IconBtn}" />
                 </Grid>
             </GroupBox>
         </Grid>
-        <Grid  Visibility="{Binding Step, Converter={StaticResource ToggleCvt},ConverterParameter=1}">
+        <Grid Visibility="{Binding Step, Converter={StaticResource ToggleCvt}, ConverterParameter=1}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition/>
+                <RowDefinition Height="40" />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            <sctl:IconButton Icon="&#xE112;" Label="返回" 
-                             Visibility="{Binding IsPaused, Converter={StaticResource ToggleCvt}}" 
-                     Command="{Binding BackCommand}"/>
-            <TextBlock Text="{Binding ProgressTip}" Grid.Column="1"/>
-            <sctl:IconButton Icon="&#xE72C;" Label="{Binding StopText}"
-                     Command="{Binding StopCommand}"  Grid.Column="2"/>
-            <ListBox ItemsSource="{Binding TransformItems}" 
-                     HorizontalContentAlignment="Stretch"
-                     Grid.Row="1" Grid.ColumnSpan="3">
+            <sctl:IconButton
+                Command="{Binding BackCommand}"
+                Icon="&#xE112;"
+                Label="返回"
+                Visibility="{Binding IsPaused, Converter={StaticResource ToggleCvt}}" />
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Text="{Binding ProgressTip}" />
+            <sctl:IconButton
+                Grid.Column="2"
+                Command="{Binding StopCommand}"
+                Icon="&#xE72C;"
+                Label="{Binding StopText}" />
+            <ListBox
+                Grid.Row="1"
+                Grid.ColumnSpan="3"
+                HorizontalContentAlignment="Stretch"
+                ItemsSource="{Binding TransformItems}">
                 <Behaviors:Interaction.Behaviors>
-                    <bhv:ListItemDoubleClickBehavior Command="{Binding SeeFileCommand}"/>
+                    <bhv:ListItemDoubleClickBehavior Command="{Binding SeeFileCommand}" />
                 </Behaviors:Interaction.Behaviors>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type mdl:FileTransformItem}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="40" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition/>
+                                <RowDefinition />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding IsFolder,Converter={StaticResource FileTypeCvt}}" 
+                            <TextBlock
                                 Grid.RowSpan="3"
-                               Style="{StaticResource IconLabel}"/>
-                            <TextBlock Text="{Binding Name}" Grid.Column="1" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding RenameName}"  
-                                       Grid.Column="1" 
-                                       Grid.Row="1"
-                                       Foreground="LightGreen" FontWeight="Bold"
-                                       Visibility="{Binding RenameName, Converter={StaticResource ToggleCvt}}" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding FileName}" 
-                                        VerticalAlignment="Center"
-                                       Foreground="Gray"
-                                       Grid.Row="2" Grid.Column="1"/>
-                            <TextBlock Text="{Binding Status,Converter={StaticResource StatusIconCvt}}"
-                                       Foreground="{Binding Status,Converter={StaticResource StatusColorCvt}}"
-                                       FontFamily="{StaticResource IconFontFamily}"
-                                       Grid.Column="2"
-                                       Grid.RowSpan="3"
-                                       HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center"
-                                       FontSize="25" FontWeight="Bold"/>
+                                Style="{StaticResource IconLabel}"
+                                Text="{Binding IsFolder, Converter={StaticResource FileTypeCvt}}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="{Binding Name}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                FontWeight="Bold"
+                                Foreground="LightGreen"
+                                Text="{Binding RenameName}"
+                                Visibility="{Binding RenameName, Converter={StaticResource ToggleCvt}}" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Foreground="Gray"
+                                Text="{Binding FileName}" />
+                            <TextBlock
+                                Grid.RowSpan="3"
+                                Grid.Column="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontFamily="{StaticResource IconFontFamily}"
+                                FontSize="25"
+                                FontWeight="Bold"
+                                Foreground="{Binding Status, Converter={StaticResource StatusColorCvt}}"
+                                Text="{Binding Status, Converter={StaticResource StatusIconCvt}}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <Grid  Visibility="{Binding Step, Converter={StaticResource ToggleCvt},ConverterParameter=2}">
+        <Grid Visibility="{Binding Step, Converter={StaticResource ToggleCvt}, ConverterParameter=2}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition/>
+                <RowDefinition Height="40" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <sctl:IconButton Icon="&#xE112;" Label="返回" 
-                        Visibility="{Binding IsPaused, Converter={StaticResource ToggleCvt}}" 
-                        Command="{Binding BackCommand}"/>
-                <sctl:IconButton Icon="&#xE724;" Label="处理"
-                                 Grid.Column="2"
-                        Command="{Binding TestExecuteCommand}"/>
+                <sctl:IconButton
+                    Command="{Binding BackCommand}"
+                    Icon="&#xE112;"
+                    Label="返回"
+                    Visibility="{Binding IsPaused, Converter={StaticResource ToggleCvt}}" />
+                <sctl:IconButton
+                    Grid.Column="2"
+                    Command="{Binding TestExecuteCommand}"
+                    Icon="&#xE724;"
+                    Label="处理" />
             </Grid>
-            <GroupBox Header="原始内容" Grid.Row="1" AllowDrop="true">
+            <GroupBox
+                Grid.Row="1"
+                AllowDrop="true"
+                Header="原始内容">
                 <Behaviors:Interaction.Behaviors>
-                    <bhv:DragFileBehavior Command="{Binding DragTestCommand}"/>
+                    <bhv:DragFileBehavior Command="{Binding DragTestCommand}" />
                 </Behaviors:Interaction.Behaviors>
-                <TextBox Text="{Binding TestText}" 
-                         AcceptsReturn="True"
-                         AcceptsTab="True"
-                         Style="{StaticResource TextDisplayTb}"/>
+                <TextBox
+                    AcceptsReturn="True"
+                    AcceptsTab="True"
+                    Style="{StaticResource TextDisplayTb}"
+                    Text="{Binding TestText}" />
             </GroupBox>
-            <GroupBox Header="处理结果" Grid.Column="1" Grid.Row="1">
-                <TextBox Text="{Binding TestResult}" 
-                         IsReadOnly="True"
-                         Style="{StaticResource TextDisplayTb}"/>
+            <GroupBox
+                Grid.Row="1"
+                Grid.Column="1"
+                Header="处理结果">
+                <TextBox
+                    IsReadOnly="True"
+                    Style="{StaticResource TextDisplayTb}"
+                    Text="{Binding TestResult}" />
             </GroupBox>
         </Grid>
     </Grid>

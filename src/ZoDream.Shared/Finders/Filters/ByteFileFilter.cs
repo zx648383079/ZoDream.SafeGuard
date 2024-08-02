@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Threading;
-using ZoDream.Shared.Finders;
 
 namespace ZoDream.Shared.Finders.Filters
 {
