@@ -11,7 +11,6 @@ namespace ZoDream.Shared.Plugins.Transformers
 
         protected override bool IsValidFile(Stream stream, CancellationToken token = default)
         {
-            return true;
             stream.Seek(0, SeekOrigin.Begin);
             var buffer = new byte[2];
             stream.Read(buffer, 0, 2);
@@ -20,17 +19,18 @@ namespace ZoDream.Shared.Plugins.Transformers
 
         protected override void TranformFile(Stream stream, CancellationToken token = default)
         {
-            //if (!IsZero(stream))
-            //{
-            //    RemoveByte(stream, 2);
-            //    return;
-            //}
+            if (!IsZero(stream))
+            {
+                RemoveByte(stream, 2);
+                return;
+            }
             stream.Seek(0, SeekOrigin.Begin);
-            var jump = 0;
+            var jump = 2;
             var zero = 0L;
             var end = stream.Length - jump;
             var buffer = new byte[Math.Min(end, 1024 * 100)];
             var i = stream.Position;
+            var stopZero = false;
             while (i < end)
             {
                 EmitProgress(i, end);
@@ -40,10 +40,19 @@ namespace ZoDream.Shared.Plugins.Transformers
                 var z = 0;
                 for (var j = 0; j < len; j++)
                 {
-                    if ((i + j) % 2 == 1 && buffer[j] == 0x0)
+                    if (!stopZero && (i + j) % 2 == 1)
                     {
-                        z++;
-                    } else if (z > 0)
+                        if (buffer[j] == 0x0)
+                        {
+                            z++;
+                        } 
+                        else
+                        {
+                            stopZero = true;
+                        }
+                        continue;
+                    }
+                    if (z > 0)
                     {
                         buffer[j - z] = buffer[j];
                     }
