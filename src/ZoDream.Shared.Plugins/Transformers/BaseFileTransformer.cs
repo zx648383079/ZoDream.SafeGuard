@@ -206,6 +206,7 @@ namespace ZoDream.Shared.Plugins.Transformers
                 stream.Write(buffer, 0, len);
             }
             stream.SetLength(end);
+            stream.Flush();
         }
     }
 }

@@ -18,17 +18,7 @@ namespace ZoDream.Shared.Plugins.Transformers
                 return false;
             }
             EmitFound(fileInfo);
-            var end = fs.Length - count;
-            var buffer = new byte[Math.Min(end, 1024)];
-            for (var i = 0L; i < end; i += buffer.Length)
-            {
-                var len = (int)Math.Min(end - i, buffer.Length);
-                fs.Seek(i + count, SeekOrigin.Begin);
-                fs.Read(buffer, 0, len);
-                fs.Seek(i, SeekOrigin.Begin);
-                fs.Write(buffer, 0, len);
-            }
-            fs.SetLength(end);
+            RemoveByte(fs, count);
             return true;
         }
 
