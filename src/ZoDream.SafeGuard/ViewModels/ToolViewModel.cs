@@ -59,17 +59,17 @@ namespace ZoDream.SafeGuard.ViewModels
             Items.Add(new("解压缩")
             {
                 Items = [
-                    new("压缩字典", "\uE7F1", "tool/finder")
+                    new("压缩字典", "\uE7F1", "tool/explorer")
                     {
                         Target = typeof(DictionaryTransformer)
                     },
-                    new("压缩文件", "\uE81E", "tool/finder")
+                    new("压缩文件", "\uE81E", "tool/explorer")
                     {
-                        Target = typeof(Base64Transformer)
+                        Target = typeof(InflateTransformer)
                     },
-                    new("解压文件", "\uE8C8", "tool/finder")
+                    new("解压文件", "\uE8C8", "tool/explorer")
                     {
-                        Target = typeof(Base64Transformer)
+                        Target = typeof(DeflateTransformer)
                     },
                 ]
             });

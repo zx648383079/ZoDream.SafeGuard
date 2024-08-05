@@ -15,6 +15,8 @@ namespace ZoDream.Shared.Plugins.Compress
         public event FinderEventHandler? FoundChanged;
         public event FinderFinishedEventHandler? Finished;
 
+        public string OutputFileName { private get; set; } = string.Empty;
+
         public void Add(IFileTransformer transformer)
         {
         }
@@ -60,8 +62,8 @@ namespace ZoDream.Shared.Plugins.Compress
             {
                 return;
             }
-            var binFile = Path.Combine(Path.GetDirectoryName(
-                Path.GetFullPath(first)), "dict.bin");
+            var binFile = string.IsNullOrWhiteSpace(OutputFileName) ? Path.Combine(Path.GetDirectoryName(
+                Path.GetFullPath(first)), "dict.bin") : OutputFileName;
             Convert(binFile, fileItems, token);
         }
 

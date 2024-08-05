@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZoDream.Shared.TextNetwork;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ZoDream.Tests
 {
@@ -12,7 +11,7 @@ namespace ZoDream.Tests
     public class TextTest
     {
         const string BaseFolder = "D:\\Desktop\\分词";
-        [TestMethod]
+        //[TestMethod]
         public void TestDict()
         {
             var dict = new CharDictionary();

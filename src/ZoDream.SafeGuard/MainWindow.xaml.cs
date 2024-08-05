@@ -30,6 +30,7 @@ namespace ZoDream.SafeGuard
             ShellManager.RegisterRoute("vuln", typeof(VulnerabilityPage));
             ShellManager.RegisterRoute("tool", typeof(ToolPage));
             ShellManager.RegisterRoute("tool/finder", typeof(FinderPage));
+            ShellManager.RegisterRoute("tool/explorer", typeof(ExplorerPage));
             ShellManager.RegisterRoute("tool/rename", typeof(RenamePage));
             ShellManager.RegisterRoute("setting", typeof(SettingPage));
         }

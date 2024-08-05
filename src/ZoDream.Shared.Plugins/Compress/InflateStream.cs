@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ZoDream.Shared.Plugins.Compress
 {
@@ -12,8 +13,8 @@ namespace ZoDream.Shared.Plugins.Compress
     public class InflateStream: IDisposable
     {
 
-        public InflateStream(string fileName, bool withName = true)
-            : this(File.OpenRead(fileName))
+        public InflateStream(string fileName, CompressDictionary dict, bool withName = true)
+            : this(File.OpenRead(fileName), dict)
         {
             if (withName)
             {
@@ -21,11 +22,13 @@ namespace ZoDream.Shared.Plugins.Compress
             }
         }
 
-        public InflateStream(Stream input)
+        public InflateStream(Stream input, CompressDictionary dict)
         {
             BaseStream = input;
+            _dict = dict;
         }
 
+        private readonly CompressDictionary _dict;
         private string _name = string.Empty;
         private bool _nextPadding = false;
         public bool WithName => !string.IsNullOrWhiteSpace(_name);
@@ -46,7 +49,9 @@ namespace ZoDream.Shared.Plugins.Compress
             {
                 return;
             }
-            WriteBytes(output, Encoding.UTF8.GetBytes(_name));
+            var buffer = Encoding.UTF8.GetBytes(_name);
+            WriteLength(output, buffer.Length);
+            WriteBytesWithoutSplit(output, buffer, buffer.Length);
         }
 
         private void WriteLength(Stream output, long length)
@@ -94,7 +99,7 @@ namespace ZoDream.Shared.Plugins.Compress
             }
             
         }
-
+        #region 正反自动切换
         private void WriteBytes(Stream output, byte[] buffer)
         {
             WriteBytes(output, buffer, buffer.Length);
@@ -127,20 +132,6 @@ namespace ZoDream.Shared.Plugins.Compress
             }
         }
 
-        private void WriteStream(Stream output, Stream input)
-        {
-            var buffer = new byte[4096];
-            while (true)
-            {
-                var len = input.Read(buffer, 0, buffer.Length);
-                if (len == 0)
-                {
-                    break;
-                }
-                WriteBytes(output, buffer, len);
-            }
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -161,9 +152,50 @@ namespace ZoDream.Shared.Plugins.Compress
             return true;
         }
 
+        #endregion
+
+        #region 不自动切换
+        private void WriteBytesWithoutSplit(Stream output, byte[] buffer, int max)
+        {
+            for (int i = 0; i < max; i++)
+            {
+                TryPaddingClamp(buffer[i], out buffer[i]);
+            }
+            output.Write(buffer, 0, max);
+        }
+
+        private bool TryPaddingClamp(byte input, out byte output)
+        {
+            var code = ReadDict();
+            var b = _nextPadding ? (input + code) : (input - code);
+            output = (byte)Clamp(b, 256);
+            return false;
+        }
+        #endregion
+
+
+        private void WriteStream(Stream output, Stream input)
+        {
+            var buffer = new byte[4096];
+            WriteLength(output, input.Length - input.Position);
+            while (true)
+            {
+                var len = input.Read(buffer, 0, buffer.Length);
+                if (len == 0)
+                {
+                    break;
+                }
+                WriteBytesWithoutSplit(output, buffer, len);
+            }
+        }
+
+
+
+
+
         private byte ReadDict()
         {
-            return 0x0;
+            return _dict.ReadByte();
         }
 
         public void WriteName(string name)
@@ -191,6 +223,18 @@ namespace ZoDream.Shared.Plugins.Compress
             var sor = Encoding.UTF8.GetBytes(source);
             var result = MD5.HashData(sor);
             return Convert.ToHexString(result).ToLower();
+        }
+
+        /// <summary>
+        /// 在指定范围0-max内容循环
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static int Clamp(int val, int max)
+        {
+            var res = val % max;
+            return res >= 0 ? res : (res + max);
         }
 
         public void Dispose()
