@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ZoDream.Shared.Plugins.Compress
 {
@@ -21,6 +19,8 @@ namespace ZoDream.Shared.Plugins.Compress
 
         public DeflateStream(Stream input, CompressDictionary dict)
         {
+            BaseStream = input;
+            _dict = dict;
             ReadHeader();
         }
         private bool _nextPadding = false;
@@ -55,6 +55,7 @@ namespace ZoDream.Shared.Plugins.Compress
         private string ReadName()
         {
             var len = ReadLength();
+            Debug.WriteLine($"<-len: {len}");
             var buffer = new byte[len];
             BaseStream.Read(buffer, 0, buffer.Length);
             Restore(buffer, buffer.Length);
@@ -76,6 +77,11 @@ namespace ZoDream.Shared.Plugins.Compress
             while (true)
             {
                 var length = ReadLength();
+                if (length < 0)
+                {
+                    return;
+                }
+                Debug.WriteLine($"<-len: {length}");
                 var i = 0L;
                 while (i < length)
                 {
@@ -103,11 +109,12 @@ namespace ZoDream.Shared.Plugins.Compress
             {
                 return BaseStream.ReadByte() + code * (code - 250);
             }
-            var len = code - 252;
+            var len = code - 251;
             var buffer = new byte[len];
             BaseStream.Read(buffer, 0, len);
+            Debug.WriteLine($"[{string.Join(',', buffer)}]");
             var res = 0L;
-            for (var j = len - 1; j >= 0; j--)
+            for (var j = len - 2; j >= 0; j--)
             {
                 res += (long)Math.Pow(code, j);
             }

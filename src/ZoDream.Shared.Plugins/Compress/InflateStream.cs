@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ZoDream.Shared.Plugins.Compress
 {
@@ -52,16 +52,18 @@ namespace ZoDream.Shared.Plugins.Compress
             var buffer = Encoding.UTF8.GetBytes(_name);
             WriteLength(output, buffer.Length);
             WriteBytesWithoutSplit(output, buffer, buffer.Length);
+            _nextPadding = !_nextPadding;
         }
 
         private void WriteLength(Stream output, long length)
         {
+            Debug.WriteLine($"->len: {length}");
             if (length <= 250)
             {
                 output.WriteByte((byte)length);
                 return;
             }
-            byte i;
+            var i = 0;
             var basic = 250;
             // 相加
             for (i = 251; i <= 252; i++)
@@ -69,19 +71,24 @@ namespace ZoDream.Shared.Plugins.Compress
                 var plus = i * (i - basic);
                 if (length <= plus + 255)
                 {
-                    output.WriteByte(i);
+                    output.WriteByte((byte)i);
                     output.WriteByte((byte)(length - plus));
                     return;
                 }
             }
             // 倍数
             basic = 252;
-            for (i = 253; i <= 255; i++)
+            i = 253;
+            for (; i <= 255; i++)
             {
                 var len = i - basic + 1;
                 var buffer = new byte[len + 1];
-                buffer[len] = i;
+                buffer[len] = (byte)i;
                 var b = 0L;
+                if (i == 255)
+                {
+                    
+                }
                 for (var j = len - 2; j >= 0; j--)
                 {
                     b += (long)Math.Pow(i, j);
@@ -94,6 +101,7 @@ namespace ZoDream.Shared.Plugins.Compress
                 }
                 if (rate == 0)
                 {
+                    Debug.WriteLine($"[{string.Join(',', buffer)}]");
                     output.Write(buffer.Reverse().ToArray());
                 }
             }

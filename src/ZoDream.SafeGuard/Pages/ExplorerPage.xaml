@@ -10,6 +10,7 @@
     xmlns:mdl="clr-namespace:ZoDream.Shared.Models;assembly=ZoDream.Shared"
     xmlns:sctl="clr-namespace:ZoDream.Shared.Controls;assembly=ZoDream.Shared.Controls"
     xmlns:vm="clr-namespace:ZoDream.SafeGuard.ViewModels"
+    x:Name="root"
     Title="ExplorerPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -62,12 +63,16 @@
                         Grid.Row="1"
                         Style="{StaticResource HeaderLabel}"
                         Text="密码：" />
-                    <sctl:FileInput Grid.Column="1" IsEnabled="{Binding IsPaused}" />
+                    <sctl:FileInput
+                        Grid.Column="1"
+                        FileName="{Binding DictFileName}"
+                        IsEnabled="{Binding IsPaused}" />
                     <TextBox
                         Grid.Row="1"
                         Grid.Column="1"
                         IsEnabled="{Binding IsPaused}"
-                        MaxLines="1" />
+                        MaxLines="1"
+                        Text="{Binding Password}" />
                 </Grid>
                 <StackPanel
                     Grid.Row="3"

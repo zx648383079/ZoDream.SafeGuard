@@ -24,26 +24,33 @@ namespace ZoDream.Shared.Plugins.Compress
 
         public byte ReadByte()
         {
-            var i = _postion % 2;
-            if (i == 0)
-            {
-                LoadByte();
-            }
-            _postion++;
-            return _buffer[i];
-        }
-
-        private void LoadByte()
-        {
             var code = _reader.ReadByte();
             if (code < 0)
             {
                 _reader.Seek(0, SeekOrigin.Begin);
             }
-            code = _reader.ReadByte();
-            _buffer[0] = (byte)(code / 10);
-            _buffer[1] = (byte)(code % 10);
+             code = _reader.ReadByte();
+            return (byte)code;
+            //var i = _postion % 2;
+            //if (i == 0)
+            //{
+            //    LoadByte();
+            //}
+            //_postion++;
+            //return _buffer[i];
         }
+
+        //private void LoadByte()
+        //{
+        //    var code = _reader.ReadByte();
+        //    if (code < 0)
+        //    {
+        //        _reader.Seek(0, SeekOrigin.Begin);
+        //    }
+        //    code = _reader.ReadByte();
+        //    _buffer[0] = (byte)(code / 10);
+        //    _buffer[1] = (byte)(code % 10);
+        //}
 
         public void WriteByte(byte[] buffer, int length) 
         {

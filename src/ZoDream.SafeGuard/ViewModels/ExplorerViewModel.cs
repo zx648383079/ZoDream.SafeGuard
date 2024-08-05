@@ -175,7 +175,8 @@ namespace ZoDream.SafeGuard.ViewModels
             {
                 var picker = new Microsoft.Win32.SaveFileDialog()
                 {
-                    RestoreDirectory = true
+                    RestoreDirectory = true,
+                    FileName = "dict.bin"
                 };
                 if (picker.ShowDialog() != true)
                 {

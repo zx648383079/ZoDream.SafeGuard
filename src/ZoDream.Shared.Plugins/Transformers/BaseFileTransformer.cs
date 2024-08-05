@@ -38,8 +38,8 @@ namespace ZoDream.Shared.Plugins.Transformers
             {
                 return false;
             }
-            EmitFound(fileInfo);
             TranformFile(fs, token);
+            EmitFound(fileInfo);
             return true;
         }
 
