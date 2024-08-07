@@ -45,12 +45,18 @@ namespace ZoDream.Shared.Plugins.Transformers
 
         protected void EmitFound(FileInfo info)
         {
-            FoundChanged?.Invoke(new FileInfoItem(info));
+            EmitFound(new FileInfoItem(info));
+        }
+
+        protected void EmitFound(FileInfoItem info)
+        {
+            FoundChanged?.Invoke(info);
         }
         protected void EmitProgress(long current, long total)
         {
             EmitProgress(_lastFile, current, total);
         }
+
         protected void EmitProgress(string fileName, long current, long total)
         {
             FileProgress?.Invoke(fileName, current, total);

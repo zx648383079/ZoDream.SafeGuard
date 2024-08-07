@@ -25,6 +25,7 @@ namespace ZoDream.Shared.Plugins.Compress
         }
         private bool _nextPadding = false;
         private long _offset = 0;
+        public bool IsMultiple = false;
         private readonly CompressDictionary _dict;
 
         public string FileName { get; private set; } = string.Empty;
@@ -47,6 +48,11 @@ namespace ZoDream.Shared.Plugins.Compress
             {
                 FileName = ReadName();
                 _offset = BaseStream.Position;
+                return;
+            }
+            if (buffer[3] == 0x3)
+            {
+                IsMultiple = true;
                 return;
             }
             throw new FileLoadException("file unsupport");
@@ -151,9 +157,9 @@ namespace ZoDream.Shared.Plugins.Compress
             var name = FileName;
             if (string.IsNullOrWhiteSpace(name))
             {
-                name = "z_" + InflateStream.MD5Encode(folder + DateTime.Now.ToLongTimeString());
+                name = InflateStream.RandomName(folder);
             }
-            using var fs = File.Create(Path.Combine(folder, name));
+            using var fs = File.Create(Path.Combine(folder, InflateStream.GetSafePath(name)));
             TransferTo(fs);
         }
     }

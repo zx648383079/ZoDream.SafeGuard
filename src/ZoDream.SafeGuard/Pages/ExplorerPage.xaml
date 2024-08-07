@@ -56,13 +56,17 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
-                        <RowDefinition />
+                        <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
                     <TextBlock Style="{StaticResource HeaderLabel}" Text="字典：" />
                     <TextBlock
                         Grid.Row="1"
                         Style="{StaticResource HeaderLabel}"
                         Text="密码：" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Style="{StaticResource HeaderLabel}"
+                        Text="打包文件夹：" />
                     <sctl:FileInput
                         Grid.Column="1"
                         FileName="{Binding DictFileName}"
@@ -73,6 +77,10 @@
                         IsEnabled="{Binding IsPaused}"
                         MaxLines="1"
                         Text="{Binding Password}" />
+                    <sctl:SwitchInput
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Value="{Binding IsCompressFolder}" />
                 </Grid>
                 <StackPanel
                     Grid.Row="3"

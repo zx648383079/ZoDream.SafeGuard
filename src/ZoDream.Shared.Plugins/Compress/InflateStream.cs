@@ -31,6 +31,8 @@ namespace ZoDream.Shared.Plugins.Compress
         private readonly CompressDictionary _dict;
         private string _name = string.Empty;
         private bool _nextPadding = false;
+
+        public bool IsMultiple = false;
         public bool WithName => !string.IsNullOrWhiteSpace(_name);
 
         public Stream BaseStream { get; }
@@ -39,7 +41,14 @@ namespace ZoDream.Shared.Plugins.Compress
         {
             output.WriteByte(0x23);
             output.WriteByte(0x5A);
-            output.WriteByte((byte)(WithName ? 1 : 2));
+            if (IsMultiple)
+            {
+                output.WriteByte(3);
+            } else
+            {
+                output.WriteByte((byte)(WithName ? 1 : 2));
+            }
+            
             output.WriteByte(0x0A);
         }
 
@@ -85,10 +94,6 @@ namespace ZoDream.Shared.Plugins.Compress
                 var buffer = new byte[len + 1];
                 buffer[len] = (byte)i;
                 var b = 0L;
-                if (i == 255)
-                {
-                    
-                }
                 for (var j = len - 2; j >= 0; j--)
                 {
                     b += (long)Math.Pow(i, j);
@@ -103,6 +108,7 @@ namespace ZoDream.Shared.Plugins.Compress
                 {
                     Debug.WriteLine($"[{string.Join(',', buffer)}]");
                     output.Write(buffer.Reverse().ToArray());
+                    break;
                 }
             }
             
@@ -221,9 +227,15 @@ namespace ZoDream.Shared.Plugins.Compress
 
         public void TransferTo(string folder)
         {
-            var name = "z_" + MD5Encode(folder + DateTime.Now.ToLongTimeString());
+            var name = RandomName(folder);
             using var fs = File.Create(Path.Combine(folder, name));
             TransferTo(fs);
+        }
+
+
+        public static string RandomName(params string[] items)
+        {
+            return "z_" + MD5Encode(string.Join(',', items) + DateTime.Now.ToLongTimeString());
         }
 
         public static string MD5Encode(string source)
@@ -231,6 +243,15 @@ namespace ZoDream.Shared.Plugins.Compress
             var sor = Encoding.UTF8.GetBytes(source);
             var result = MD5.HashData(sor);
             return Convert.ToHexString(result).ToLower();
+        }
+
+        public static string GetSafePath(string fileName)
+        {
+            foreach (var item in Path.GetInvalidPathChars())
+            {
+                fileName = fileName.Replace(item, '_');
+            }
+            return fileName;
         }
 
         /// <summary>

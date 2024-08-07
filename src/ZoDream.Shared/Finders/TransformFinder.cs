@@ -25,7 +25,7 @@ namespace ZoDream.Shared.Finders
             TransformerItems.Add(transformer);
         }
 
-        protected override IEnumerable<string> Preprocess(IEnumerable<string> files)
+        protected override IEnumerable<string> Preprocess(IEnumerable<string> files, CancellationToken token = default)
         {
             foreach (var item in TransformerItems)
             {

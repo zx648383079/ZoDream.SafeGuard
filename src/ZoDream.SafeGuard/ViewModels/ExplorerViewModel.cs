@@ -99,6 +99,12 @@ namespace ZoDream.SafeGuard.ViewModels
             set => Set(ref password, value);
         }
 
+        private bool isCompressFolder;
+
+        public bool IsCompressFolder {
+            get => isCompressFolder;
+            set => Set(ref isCompressFolder, value);
+        }
 
 
         private ObservableCollection<FileInfoItem> matchFileItems = [];
@@ -203,6 +209,7 @@ namespace ZoDream.SafeGuard.ViewModels
                 o.OutputFolder = folder.SelectedPath;
                 o.Password = Password;
                 o.DictionaryFileName = DictFileName;
+                o.Multiple = IsCompressFolder;
             }
             return true;
         }

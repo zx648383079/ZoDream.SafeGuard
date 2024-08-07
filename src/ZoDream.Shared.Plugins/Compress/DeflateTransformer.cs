@@ -11,6 +11,8 @@ namespace ZoDream.Shared.Plugins.Compress
         public string DictionaryFileName { set; private get; } = string.Empty;
         public string Password { set; private get; } = string.Empty;
 
+        public bool Multiple { private get; set; }
+
         protected override bool IsValidFile(Stream stream, CancellationToken token = default)
         {
             var buffer = new byte[4];
@@ -19,22 +21,17 @@ namespace ZoDream.Shared.Plugins.Compress
             {
                 return false;
             }
-            if (buffer[2] == 0x2)
-            {
-                return true;
-            }
-            if (buffer[2] == 0x1)
-            {
-                return true;
-            }
-            return false;
+            return buffer[2] > 0x0 && buffer[2] < 0x4;
         }
 
         protected override void TranformFile(Stream stream, CancellationToken token = default)
         {
             stream.Seek(0, SeekOrigin.Begin);
-            var input = new DeflateStream(stream, new CompressDictionary(DictionaryFileName));
-            input.TransferTo(OutputFolder);
+            var input = new CompressStream(stream, new CompressDictionary(DictionaryFileName));
+            foreach (var entry in input.ReadFile(OutputFolder)) 
+            {
+                EmitProgress($"entry: {entry}", 100, 100);
+            }
         }
     }
 }

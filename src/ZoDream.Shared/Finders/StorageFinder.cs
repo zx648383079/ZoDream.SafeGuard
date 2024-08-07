@@ -21,7 +21,7 @@ namespace ZoDream.Shared.Finders
             _cancelTokenSource = new CancellationTokenSource();
             var token = _cancelTokenSource.Token;
             Task.Factory.StartNew(() => {
-                CheckAnyFile(Preprocess(folders), token);
+                CheckAnyFile(Preprocess(folders, token), token);
                 Finished?.Invoke();
             }, token);
         }
@@ -35,7 +35,7 @@ namespace ZoDream.Shared.Finders
             }
         }
 
-        protected virtual IEnumerable<string> Preprocess(IEnumerable<string> files)
+        protected virtual IEnumerable<string> Preprocess(IEnumerable<string> files, CancellationToken token = default)
         {
             return files;
         }
