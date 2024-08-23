@@ -1,185 +1,268 @@
-﻿<Page x:Class="ZoDream.SafeGuard.Pages.RenamePage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ZoDream.SafeGuard.Pages"
-      xmlns:vm="clr-namespace:ZoDream.SafeGuard.ViewModels"
-      xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
-      xmlns:bhv="clr-namespace:ZoDream.SafeGuard.Behaviors"
-      xmlns:sctl="clr-namespace:ZoDream.Shared.Controls;assembly=ZoDream.Shared.Controls"
-      mc:Ignorable="d" 
-      x:Name="root"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="RenamePage">
+﻿<Page
+    x:Class="ZoDream.SafeGuard.Pages.RenamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:bhv="clr-namespace:ZoDream.SafeGuard.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ZoDream.SafeGuard.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sctl="clr-namespace:ZoDream.Shared.Controls;assembly=ZoDream.Shared.Controls"
+    xmlns:vm="clr-namespace:ZoDream.SafeGuard.ViewModels"
+    x:Name="root"
+    Title="RenamePage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <Page.Resources>
-        <ResourceDictionary Source="/Themes/ScanStyle.xaml"/>
+        <ResourceDictionary Source="/Themes/ScanStyle.xaml" />
     </Page.Resources>
 
     <Page.DataContext>
-        <vm:RenameViewModel/>
+        <vm:RenameViewModel />
     </Page.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="300" MaxWidth="600" Width="*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition
+                Width="*"
+                MinWidth="300"
+                MaxWidth="600" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <ListBox ItemsSource="{Binding FileItems}"
-                 SelectedItem="{Binding FileSelectedItem,Mode=TwoWay}"
-                 AllowDrop="True"
-                 Grid.Column="1" HorizontalContentAlignment="Stretch">
+        <ListBox
+            Grid.Column="1"
+            HorizontalContentAlignment="Stretch"
+            AllowDrop="True"
+            ItemsSource="{Binding FileItems}"
+            SelectedItem="{Binding FileSelectedItem, Mode=TwoWay}">
             <Behaviors:Interaction.Behaviors>
-                <bhv:DragFileBehavior Command="{Binding DragFileCommand}"/>
+                <bhv:DragFileBehavior Command="{Binding DragFileCommand}" />
             </Behaviors:Interaction.Behaviors>
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type vm:RenameFileItemViewModel}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="20"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Index}" Grid.RowSpan="3" 
-                                   FontSize="20"
-                                   FontWeight="Bold"
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding IsFolder,Converter={StaticResource FileTypeCvt}}" 
-                                   Grid.Column="1"
-                                   Grid.RowSpan="2"
-                                   Style="{StaticResource IconLabel}"/>
-                        <TextBlock Text="{Binding Name}" FontWeight="Light" Grid.Column="2"/>
-                        <TextBlock Text="{Binding ReplaceName}" Foreground="LightGreen" FontWeight="Bold" 
-                                   Grid.Column="2" Grid.Row="1"/>
-                        <TextBlock Text="{Binding FileName}" 
-                                   FontSize="10"
-                                   Foreground="Gray"
-                                   Grid.Row="2" 
-                                   Grid.Column="1" Grid.ColumnSpan="3"/>
+                        <TextBlock
+                            Grid.RowSpan="3"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="{Binding Index}" />
+                        <TextBlock
+                            Grid.RowSpan="2"
+                            Grid.Column="1"
+                            Style="{StaticResource IconLabel}"
+                            Text="{Binding IsFolder, Converter={StaticResource FileTypeCvt}}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            FontWeight="Light"
+                            Text="{Binding Name}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            FontWeight="Bold"
+                            Foreground="LightGreen"
+                            Text="{Binding ReplaceName}" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="3"
+                            FontSize="10"
+                            Foreground="Gray"
+                            Text="{Binding FileName}" />
 
-                        <StackPanel Grid.Column="3" Grid.RowSpan="2" Orientation="Horizontal">
-                            <Button Content="&#xE898;" ToolTip="置顶" 
-                                    Command="{Binding ElementName=root, 
-                                    Path=DataContext.MoveTopCommand}"      
-                                    CommandParameter="{Binding}"
-                                    Style="{StaticResource IconBtn}"/>
-                            <Button Content="&#xE74A;" ToolTip="上移" 
-                                    Command="{Binding ElementName=root, 
-                                    Path=DataContext.MoveUpCommand}"      
-                                    CommandParameter="{Binding}"
-                                    Style="{StaticResource IconBtn}"/>
-                            <Button Content="&#xE74B;" ToolTip="下移" 
-                                    Command="{Binding ElementName=root, 
-                                    Path=DataContext.MoveDownCommand}"      
-                                    CommandParameter="{Binding}"
-                                    Style="{StaticResource IconBtn}"/>
-                            <Button Content="&#xE896;" ToolTip="置底" 
-                                    Command="{Binding ElementName=root, 
-                                    Path=DataContext.MoveLastCommand}"      
-                                    CommandParameter="{Binding}"
-                                    Style="{StaticResource IconBtn}"/>
-                            <Button Content="&#xE653;" ToolTip="移除" 
-                                    Command="{Binding ElementName=root, 
-                                    Path=DataContext.RemoveCommand}"      
-                                    CommandParameter="{Binding}"
-                                    Style="{StaticResource IconBtn}"/>
+                        <StackPanel
+                            Grid.RowSpan="2"
+                            Grid.Column="3"
+                            Orientation="Horizontal">
+                            <Button
+                                Command="{Binding ElementName=root, Path=DataContext.MoveTopCommand}"
+                                CommandParameter="{Binding}"
+                                Content="&#xE898;"
+                                Style="{StaticResource IconBtn}"
+                                ToolTip="置顶" />
+                            <Button
+                                Command="{Binding ElementName=root, Path=DataContext.MoveUpCommand}"
+                                CommandParameter="{Binding}"
+                                Content="&#xE74A;"
+                                Style="{StaticResource IconBtn}"
+                                ToolTip="上移" />
+                            <Button
+                                Command="{Binding ElementName=root, Path=DataContext.MoveDownCommand}"
+                                CommandParameter="{Binding}"
+                                Content="&#xE74B;"
+                                Style="{StaticResource IconBtn}"
+                                ToolTip="下移" />
+                            <Button
+                                Command="{Binding ElementName=root, Path=DataContext.MoveLastCommand}"
+                                CommandParameter="{Binding}"
+                                Content="&#xE896;"
+                                Style="{StaticResource IconBtn}"
+                                ToolTip="置底" />
+                            <Button
+                                Command="{Binding ElementName=root, Path=DataContext.RemoveCommand}"
+                                CommandParameter="{Binding}"
+                                Content="&#xE653;"
+                                Style="{StaticResource IconBtn}"
+                                ToolTip="移除" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="置顶" Command="{Binding MoveTopCommand}"/>
-                    <MenuItem Header="上移" Command="{Binding MoveUpCommand}"/>
-                    <MenuItem Header="下移" Command="{Binding MoveDownCommand}"/>
-                    <MenuItem Header="置底" Command="{Binding MoveLastCommand}"/>
-                    <Separator/>
-                    <MenuItem Header="移除" Command="{Binding RemoveCommand}"/>
-                    <MenuItem Header="添加文件" Command="{Binding AddFileCommand}"/>
-                    <MenuItem Header="清空" Command="{Binding ClearCommand}"/>
+                    <MenuItem Command="{Binding MoveTopCommand}" Header="置顶" />
+                    <MenuItem Command="{Binding MoveUpCommand}" Header="上移" />
+                    <MenuItem Command="{Binding MoveDownCommand}" Header="下移" />
+                    <MenuItem Command="{Binding MoveLastCommand}" Header="置底" />
+                    <Separator />
+                    <MenuItem Command="{Binding RemoveCommand}" Header="移除" />
+                    <MenuItem Command="{Binding AddFileCommand}" Header="添加文件" />
+                    <MenuItem Command="{Binding ClearCommand}" Header="清空" />
                     <MenuItem Header="排序">
-                        <MenuItem Header="文件名排序" Command="{Binding OrderCommand}" CommandParameter="0"/>
-                        <MenuItem Header="时间排序" Command="{Binding OrderCommand}" CommandParameter="1"/>
-                        <MenuItem Header="自定义排序" Command="{Binding OrderCommand}" CommandParameter="9"/>
+                        <MenuItem
+                            Command="{Binding OrderCommand}"
+                            CommandParameter="0"
+                            Header="文件名排序" />
+                        <MenuItem
+                            Command="{Binding OrderCommand}"
+                            CommandParameter="1"
+                            Header="时间排序" />
+                        <MenuItem
+                            Command="{Binding OrderCommand}"
+                            CommandParameter="9"
+                            Header="自定义排序" />
                     </MenuItem>
                 </ContextMenu>
             </ListBox.ContextMenu>
         </ListBox>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="40"/>
+                <RowDefinition />
+                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <StackPanel>
                 <GroupBox Header="替换">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
-                        <TextBlock Text="替换规则:" Style="{StaticResource HeaderLabel}"/>
-                        <TextBlock Text="匹配内容:" Grid.Row="1" Style="{StaticResource HeaderLabel}"/>
-                        <TextBlock Grid.Row="2" Text="替换为:" Style="{StaticResource HeaderLabel}"/>
-                        <ComboBox ItemsSource="{Binding ReplaceMatchType}" SelectedIndex="{Binding ReplaceTypeIndex,Mode=TwoWay}" Grid.Column="1"/>
-                        <ComboBox ItemsSource="{Binding ReplaceMatchRule}" SelectedIndex="{Binding ReplaceRuleIndex,Mode=TwoWay}" Grid.Column="2"/>
-                        <TextBox Text="{Binding ReplaceMatch,Mode=TwoWay}" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" MaxLines="1"/>
-                        <TextBox Text="{Binding ReplaceValue,Mode=TwoWay}" ToolTip="单字符替换模式下，取最后一个字符作为默认替换字符" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" MaxLines="1"/>
+                        <TextBlock Style="{StaticResource HeaderLabel}" Text="替换规则:" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="匹配内容:" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="替换为:" />
+                        <ComboBox
+                            Grid.Column="1"
+                            ItemsSource="{Binding ReplaceMatchType}"
+                            SelectedIndex="{Binding ReplaceTypeIndex, Mode=TwoWay}" />
+                        <ComboBox
+                            Grid.Column="2"
+                            ItemsSource="{Binding ReplaceMatchRule}"
+                            SelectedIndex="{Binding ReplaceRuleIndex, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            MaxLines="1"
+                            Text="{Binding ReplaceMatch, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            MaxLines="1"
+                            Text="{Binding ReplaceValue, Mode=TwoWay}"
+                            ToolTip="单字符替换模式下，取最后一个字符作为默认替换字符" />
                     </Grid>
                 </GroupBox>
                 <GroupBox Header="序号">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
-                        <TextBlock Text="规则:" Style="{StaticResource HeaderLabel}"/>
-                        <TextBlock Text="序号位数:" Grid.Row="1" Style="{StaticResource HeaderLabel}"/>
-                        <TextBlock Text="开始序号:" Grid.Row="2" Style="{StaticResource HeaderLabel}"/>
-                        <TextBox Text="{Binding OrderRule,Mode=TwoWay}" ToolTip="规则: {name} 表示文件名 {no} 表示序号" Grid.Column="1" MaxLines="1"/>
-                        <sctl:NumberInput Value="{Binding OrderPad,Mode=TwoWay}" Min="1" Grid.Column="1" Grid.Row="1"/>
-                        <sctl:NumberInput Value="{Binding OrderBegin,Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
+                        <TextBlock Style="{StaticResource HeaderLabel}" Text="规则:" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="序号位数:" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Style="{StaticResource HeaderLabel}"
+                            Text="开始序号:" />
+                        <TextBox
+                            Grid.Column="1"
+                            MaxLines="1"
+                            Text="{Binding OrderRule, Mode=TwoWay}"
+                            ToolTip="规则: {name} 表示文件名 {no} 表示序号" />
+                        <sctl:NumberInput
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Min="1"
+                            Value="{Binding OrderPad, Mode=TwoWay}" />
+                        <sctl:NumberInput
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Value="{Binding OrderBegin, Mode=TwoWay}" />
                     </Grid>
                 </GroupBox>
                 <GroupBox Header="拓展名">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="大小写:"  Style="{StaticResource HeaderLabel}"/>
-                        <sctl:SwitchInput Value="{Binding ExtensionUpper,Mode=TwoWay}" OnLabel="大写" OffLabel="小写" HorizontalAlignment="Right" Grid.Column="1"/>
+                        <TextBlock Style="{StaticResource HeaderLabel}" Text="大小写:" />
+                        <sctl:SwitchInput
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            OffLabel="小写"
+                            OnLabel="大写"
+                            Value="{Binding ExtensionUpper, Mode=TwoWay}" />
                     </Grid>
                 </GroupBox>
             </StackPanel>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="40" />
                 </Grid.ColumnDefinitions>
-                <Button Content="{Binding BtnText}" Command="{Binding StartCommand}"/>
-                <Button Content="&#xE710;" Command="{Binding AddFileCommand}" 
-                        IsEnabled="{Binding IsPaused}"
-                        Style="{StaticResource IconBtn}"
-                        Grid.Column="1"/>
+                <Button Command="{Binding StartCommand}" Content="{Binding BtnText}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding AddFileCommand}"
+                    Content="&#xE710;"
+                    IsEnabled="{Binding IsPaused}"
+                    Style="{StaticResource IconBtn}" />
             </Grid>
         </Grid>
     </Grid>

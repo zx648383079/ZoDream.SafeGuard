@@ -137,8 +137,8 @@ namespace ZoDream.SafeGuard.ViewModels
 
         private void TapSelectMatch(object? _)
         {
-            var picker = new System.Windows.Forms.FolderBrowserDialog();
-            if (picker.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            var picker = new FolderBrowserDialog();
+            if (picker.ShowDialog() != DialogResult.OK)
             {
                 return;
             }

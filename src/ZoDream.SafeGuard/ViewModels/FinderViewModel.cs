@@ -29,6 +29,7 @@ namespace ZoDream.SafeGuard.ViewModels
             StopCommand = new RelayCommand(TapStop);
             DragMatchCommand = new RelayCommand(OnDragMatch);
             SeeFileCommand = new RelayCommand(TapSeeFile);
+            SelectOutputCommand = new RelayCommand(TapSelectOutput);
         }
         public ITransformFinder? Finder { get; private set; }
 
@@ -78,6 +79,15 @@ namespace ZoDream.SafeGuard.ViewModels
             set => Set(ref toolDescription, value);
         }
 
+        private string outputFolder = string.Empty;
+
+        public string OutputFolder 
+        {
+            get => outputFolder;
+            set => Set(ref outputFolder, value);
+        }
+
+
 
         private ObservableCollection<FileInfoItem> matchFileItems = [];
 
@@ -115,6 +125,7 @@ namespace ZoDream.SafeGuard.ViewModels
         public ICommand BackCommand { get; private set; }
 
         public ICommand SelectMatchCommand { get; private set; }
+        public ICommand SelectOutputCommand { get; private set; }
 
         public ICommand DragMatchCommand { get; private set; }
 
@@ -125,6 +136,20 @@ namespace ZoDream.SafeGuard.ViewModels
         public ICommand DragTestCommand { get; private set; }
 
         public ICommand SeeFileCommand { get; private set; }
+
+
+        private void TapSelectOutput(object? _)
+        {
+            var picker = new System.Windows.Forms.FolderBrowserDialog()
+            {
+                ShowNewFolderButton = true,
+            };
+            if (picker.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            OutputFolder = picker.SelectedPath;
+        }
 
         private void TapTest(object? _)
         {
@@ -200,6 +225,10 @@ namespace ZoDream.SafeGuard.ViewModels
             if (Finder is null)
             {
                 return;
+            }
+            if (Finder is IFinderOutput o)
+            {
+                o.OutputFolder = OutputFolder;
             }
             Step = 1;
             IsPaused = false;

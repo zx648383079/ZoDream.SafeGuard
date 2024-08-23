@@ -36,7 +36,15 @@ namespace ZoDream.SafeGuard.ViewModels
                     {
                         Target = typeof(NasRenameTransformer)
                     },
-                    
+                    new("文件移动", "\uE8DE", "tool/finder")
+                    {
+                        Target = typeof(CopyFileTransformer)
+                    },
+                    new("文件删除", "\uE74D", "tool/finder")
+                    {
+                        Description = "删除指定文件和删除空文件夹",
+                        Target = typeof(DeleteFileTransformer)
+                    },
                 ]
             });
             Items.Add(new("文件")

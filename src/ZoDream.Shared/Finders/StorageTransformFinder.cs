@@ -37,6 +37,7 @@ namespace ZoDream.Shared.Finders
             _cancelTokenSource = new CancellationTokenSource();
             var token = _cancelTokenSource.Token;
             Task.Factory.StartNew(() => {
+                OnReady(folders);
                 CheckAnyFile(folders, token);
                 OnFinished(token);
                 Finished?.Invoke();
@@ -68,6 +69,11 @@ namespace ZoDream.Shared.Finders
         public string Transform(string content, CancellationToken token = default)
         {
             return TransformTo(content);
+        }
+
+        protected virtual void OnReady(IEnumerable<string> items)
+        {
+
         }
 
         /// <summary>
@@ -152,6 +158,10 @@ namespace ZoDream.Shared.Finders
         {
             try
             {
+                if (!folder.Exists)
+                {
+                    return;
+                }
                 foreach (var item in folder.EnumerateDirectories())
                 {
                     CheckFolder(item, token);

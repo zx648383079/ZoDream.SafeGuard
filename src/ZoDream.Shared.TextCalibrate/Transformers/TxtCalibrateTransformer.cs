@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.International.Converters.TraditionalChineseToSimplifiedConverter;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using ZoDream.Shared.Interfaces;
 using ZoDream.Shared.Storage;
 
@@ -18,6 +18,8 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
         /// 是否需要自动合并章节
         /// </summary>
         public bool MergeEnabled { get; private set; } = false;
+
+        public bool? SimplifiedToTraditional = null;
         public List<object> RuleItems { get; private set; } = [];
 
         public IEnumerable<string> Preprocess(IEnumerable<string> files)
@@ -47,6 +49,12 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
             //content = content.Replace("”“", "”\n    “");
             //content = CommaRegex().Replace(content, "”\n    ");
             //content = CommaLineRegex().Replace(content, "”\n    “");
+            if (SimplifiedToTraditional is not null)
+            {
+                content = ChineseConverter.Convert(content,
+                    SimplifiedToTraditional == true ?
+                    ChineseConversionDirection.SimplifiedToTraditional : ChineseConversionDirection.TraditionalToSimplified);
+            }
             var lineTag = content.Contains("\r\n") ? "\r\n" : "\n";
             var lines =  content.Split(lineTag);
             var sb = new StringBuilder();
@@ -241,6 +249,14 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
                         break;
                     case "@":
                         MergeEnabled = true;
+                        break;
+                    case "~":
+                        SimplifiedToTraditional = line.ToLower() switch
+                        {
+                            "c" => false,
+                            "t" => true,
+                            _ => null
+                        };
                         break;
                     default:
                         break;

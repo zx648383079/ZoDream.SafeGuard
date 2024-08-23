@@ -36,6 +36,7 @@
                     <RowDefinition Height="40" />
                     <RowDefinition />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <TextBlock
                     HorizontalAlignment="Center"
@@ -47,8 +48,22 @@
                     Background="Transparent"
                     Text="{Binding ToolDescription}"
                     TextWrapping="Wrap" />
+                <GroupBox Grid.Row="2" Header="保存目录">
+                    <Grid Height="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox MaxLines="1" Text="{Binding OutputFolder}" />
+                        <Button
+                            Grid.Column="1"
+                            Command="{Binding SelectOutputCommand}"
+                            Content="&#xE838;"
+                            Style="{StaticResource IconBtn}" />
+                    </Grid>
+                </GroupBox>
                 <StackPanel
-                    Grid.Row="2"
+                    Grid.Row="3"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
                     <sctl:IconButton

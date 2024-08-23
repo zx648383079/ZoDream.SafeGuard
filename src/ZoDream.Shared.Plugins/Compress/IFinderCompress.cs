@@ -1,8 +1,9 @@
-﻿namespace ZoDream.Shared.Plugins.Compress
+﻿using ZoDream.Shared.Interfaces;
+
+namespace ZoDream.Shared.Plugins.Compress
 {
-    public interface IFinderCompress
+    public interface IFinderCompress: IFinderOutput
     {
-        public string OutputFolder { set; }
         public string DictionaryFileName { set; }
         public string Password { set; }
 

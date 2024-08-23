@@ -200,6 +200,10 @@ namespace ZoDream.Shared.Plugins.Transformers
         /// <param name="length"></param>
         protected void RemoveByte(Stream stream, long length)
         {
+            if (length == 0)
+            {
+                return;
+            }
             var end = stream.Length - length;
             var buffer = new byte[Math.Min(end, 1024 * 100)];
             for (var i = stream.Position; i < end; i += buffer.Length)
