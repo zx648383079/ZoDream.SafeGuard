@@ -14,7 +14,7 @@ namespace ZoDream.Tests
         [TestMethod]
         public void TestByte()
         {
-            Assert.AreEqual(Convert.ToByte("33", 16), (byte)'3');
+            Assert.AreEqual((25 >> 0) & 0xff, 25);
             // Assert.AreEqual(InflateStream.Clamp(-361, 360), 359);
         }
 

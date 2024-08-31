@@ -71,7 +71,7 @@ namespace ZoDream.Shared.Plugins.Compress
         {
             using var output = new FileStream(binFile, FileMode.Create);
             // output.WriteByte(3);
-            var buffer = new byte[1024];
+            var buffer = new byte[32 * 40];
             foreach (var item in fileItems)
             {
                 if (!File.Exists(item) || token.IsCancellationRequested)
@@ -87,14 +87,7 @@ namespace ZoDream.Shared.Plugins.Compress
                     {
                         break;
                     }
-                    var j = 0;
-                    for (var i = 0; i < count; i+=2)
-                    {
-                        j = i / 2;
-                        buffer[j] = (byte)((buffer[i] - 48) * 10 +
-                            (i + 1 >= count ? 0 : (buffer[i + 1] - 48)));
-                    }
-                    output.Write(buffer, 0, j);
+                    output.Write(CompressDictionary.Convert(buffer, count));
                 }
             }
             FoundChanged?.Invoke(new Models.FileInfoItem(binFile));

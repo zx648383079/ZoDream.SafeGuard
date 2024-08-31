@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZoDream.Shared.Plugins.Compress
 {
@@ -21,6 +17,11 @@ namespace ZoDream.Shared.Plugins.Compress
         private readonly Stream _reader;
         private readonly byte[] _buffer = new byte[2];
         private long _postion = 0;
+
+        public void Seek(long len, SeekOrigin origin)
+        {
+            _reader.Seek(len, origin);
+        }
 
         public byte ReadByte()
         {
@@ -69,7 +70,7 @@ namespace ZoDream.Shared.Plugins.Compress
         {
             using var output = new FileStream(binFile, FileMode.Create);
             // output.WriteByte(3);
-            var buffer = new byte[2];
+            var buffer = new byte[32 * 30];
             foreach (var item in fileItems)
             {
                 if (!File.Exists(item))
@@ -79,14 +80,61 @@ namespace ZoDream.Shared.Plugins.Compress
                 using var input = File.OpenRead(item);
                 while (true)
                 {
-                    var c = input.Read(buffer, 0, 2);
+                    var c = input.Read(buffer, 0, buffer.Length);
                     if (c == 0)
                     {
                         break;
                     }
-                    output.WriteByte((byte)((buffer[0] - 48) * 10 + buffer[1] - 48));
+                    output.Write(Convert(buffer, c));
                 }
             }
+        }
+
+        public static byte[] Convert(byte[] buffer, int length)
+        {
+            var partLength = 32;
+            var blockLength = 5;
+            var partCount = (int)Math.Ceiling((double)length / partLength);
+            var target = new byte[partCount * blockLength];
+            for (var j = 0; j < partCount; j++)
+            {
+                var val = 0L;
+                var begin = partLength * j;
+                for (var i = 0; i < partLength; i++)
+                {
+                    var index = begin + i;
+                    val = val * 10L + (index >= length ? 0 : (buffer[index] - 48));
+                }
+                begin = blockLength * j;
+                for (var i = 0; i < blockLength; i++)
+                {
+                    target[begin + i] = (byte)((val >> (8 * (blockLength - i - 1))) & 0xFF);
+                }
+            }
+            return target;
+        }
+        public static byte[] ConvertBack(byte[] buffer, int length)
+        {
+            var partLength = 32;
+            var blockLength = 5;
+            var partCount = (int)Math.Ceiling((double)length / blockLength);
+            var target = new byte[partCount * partLength];
+            for (var j = 0; j < partCount; j++)
+            {
+                var val = 0L;
+                var begin = blockLength * j;
+                for (var i = 0; i < blockLength; i++)
+                {
+                    val += (buffer[begin + i] & 0xFF) << (8 * (blockLength - i - 1));
+                }
+                begin = partLength * j;
+                for (var i = blockLength - 1; i >= 0; i--)
+                {
+                    target[begin + i] = (byte)(val % 10 + 48);
+                    val /= 10;
+                }
+            }
+            return target;
         }
     }
 }

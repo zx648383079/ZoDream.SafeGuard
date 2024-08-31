@@ -93,6 +93,7 @@ namespace ZoDream.Shared.Plugins.Compress
         {
             var len = ReadLength();
             stream.Seek(len, SeekOrigin.Current);
+            dict.Seek(len, SeekOrigin.Current);
         }
 
         public IEnumerable<string> ReadFile()
