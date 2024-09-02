@@ -15,12 +15,18 @@ namespace ZoDream.Shared.Plugins.Compress
         }
 
         private readonly Stream _reader;
-        private readonly byte[] _buffer = new byte[2];
-        private long _postion = 0;
+        // private readonly byte[] _buffer = new byte[2];
+        // private long _postion = 0;
 
         public void Seek(long len, SeekOrigin origin)
         {
-            _reader.Seek(len, origin);
+            var pos = origin switch
+            {
+                SeekOrigin.Current => _reader.Position + len,
+                SeekOrigin.End => _reader.Length + len,
+                _ => len
+            };
+            _reader.Seek(pos % _reader.Length, SeekOrigin.Begin);
         }
 
         public byte ReadByte()
@@ -55,15 +61,7 @@ namespace ZoDream.Shared.Plugins.Compress
 
         public void WriteByte(byte[] buffer, int length) 
         {
-            var data = new byte[(int)Math.Ceiling((double)length / 2)];
-            var j = 0;
-            for (var i = 0; i < length; i += 2)
-            {
-                j = i / 2;
-                data[j] = (byte)((buffer[i] - 48) * 10 +
-                    (i + 1 >= length ? 0 : (buffer[i + 1] - 48)));
-            }
-            _reader.Write(buffer, 0, data.Length);
+            _reader.Write(Convert(buffer, length));
         }
 
         public static void Convert(string binFile, params string[] fileItems)
