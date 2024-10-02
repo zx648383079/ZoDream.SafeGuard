@@ -12,16 +12,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentFTP" Version="51.0.0" />
+    <PackageReference Include="FluentFTP" Version="51.1.0" />
     <PackageReference Include="Microsoft.ML" Version="3.0.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\shared\ZoDream.Shared.Controls\ZoDream.Shared.Controls.csproj" />
     <ProjectReference Include="..\ZoDream.Shared.CodeScanner\ZoDream.Shared.CodeScanner.csproj" />
-    <ProjectReference Include="..\ZoDream.Shared.Encryptors\ZoDream.Shared.Encryptors.csproj" />
     <ProjectReference Include="..\ZoDream.Shared.Plugins\ZoDream.Shared.Plugins.csproj" />
     <ProjectReference Include="..\ZoDream.Shared.TextCalibrate\ZoDream.Shared.TextCalibrate.csproj" />
     <ProjectReference Include="..\ZoDream.Shared.TextNetwork\ZoDream.Shared.TextNetwork.csproj" />

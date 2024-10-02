@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ZoDream.Shared.CodeScanner.Transformers;
 using ZoDream.Shared.Models;
-using ZoDream.Shared.Plugins.Compress;
 using ZoDream.Shared.Plugins.Transformers;
 using ZoDream.Shared.TextCalibrate.Transformers;
 using ZoDream.Shared.ViewModels;
@@ -61,23 +60,6 @@ namespace ZoDream.SafeGuard.ViewModels
                     new("Base64文件解码", "\uE72E", "tool/finder")
                     {
                         Target = typeof(Base64Transformer)
-                    },
-                ]
-            });
-            Items.Add(new("解压缩")
-            {
-                Items = [
-                    new("压缩字典", "\uE7F1", "tool/explorer")
-                    {
-                        Target = typeof(DictionaryTransformer)
-                    },
-                    new("压缩文件", "\uE81E", "tool/explorer")
-                    {
-                        Target = typeof(InflateTransformer)
-                    },
-                    new("解压文件", "\uE8C8", "tool/explorer")
-                    {
-                        Target = typeof(DeflateTransformer)
                     },
                 ]
             });

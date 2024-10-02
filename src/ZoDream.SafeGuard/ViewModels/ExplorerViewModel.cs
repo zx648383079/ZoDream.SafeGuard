@@ -10,7 +10,6 @@ using ZoDream.Shared.ViewModels;
 using ZoDream.Shared.Extensions;
 using System.IO;
 using System.Windows.Forms;
-using ZoDream.Shared.Plugins.Compress;
 using ZoDream.Shared.Routes;
 
 namespace ZoDream.SafeGuard.ViewModels
@@ -179,37 +178,12 @@ namespace ZoDream.SafeGuard.ViewModels
         {
             if (!IsCompress)
             {
-                var picker = new Microsoft.Win32.SaveFileDialog()
-                {
-                    RestoreDirectory = true,
-                    FileName = "dict.bin"
-                };
-                if (picker.ShowDialog() != true)
-                {
-                    return false;
-                }
-                (Finder as DictionaryTransformer).OutputFileName = picker.FileName;
                 return true;
             }
             if (string.IsNullOrEmpty(DictFileName))
             {
                 MessageBox.Show("请选择字典文件");
                 return false;
-            }
-            if (Finder is IFinderCompress o)
-            {
-                var folder = new FolderBrowserDialog()
-                {
-                    ShowNewFolderButton = true
-                };
-                if (folder.ShowDialog() != DialogResult.OK)
-                {
-                    return false;
-                }
-                o.OutputFolder = folder.SelectedPath;
-                o.Password = Password;
-                o.DictionaryFileName = DictFileName;
-                o.Multiple = IsCompressFolder;
             }
             return true;
         }
@@ -307,7 +281,6 @@ namespace ZoDream.SafeGuard.ViewModels
                     ToolDescription = o.Description;
                 }
                 var transformer = Activator.CreateInstance(o.Target);
-                IsCompress = transformer is not DictionaryTransformer;
                 if (transformer is ITransformFinder finder)
                 {
                     Finder = finder;
