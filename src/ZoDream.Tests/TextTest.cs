@@ -38,5 +38,13 @@ namespace ZoDream.Tests
             //}
             Assert.AreEqual(data.Count, 99);
         }
+
+        [TestMethod]
+        public void TestSub()
+        {
+            var text = "12345577";
+            var res = text[0..(text.Length - 1)];
+            Assert.AreEqual(text, res);
+        }
     }
 }

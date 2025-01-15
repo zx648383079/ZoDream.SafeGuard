@@ -49,6 +49,10 @@ namespace ZoDream.SafeGuard.ViewModels
             Items.Add(new("文件")
             {
                 Items = [
+                    new("代码美化", "\uE78A", "tool/finder")
+                    {
+                        Target = typeof(CodeFormatTransformer)
+                    },
                     new("Unity文件修复", "\uE90F", "tool/finder")
                     {
                         Target = typeof(UnityRepairTransformer)

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>net8.0</TargetFramework>
+	  <TargetFramework>net9.0</TargetFramework>
 	  <Nullable>enable</Nullable>
 	  <LangVersion>12</LangVersion>
 	  <Authors>zodream</Authors>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ML" Version="3.0.1" />
+    <PackageReference Include="Microsoft.ML" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>

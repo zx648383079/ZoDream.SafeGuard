@@ -39,6 +39,11 @@
                 Label="离线匹配"
                 Style="{StaticResource LargeIcon}" />
             <sctl:IconButton
+                Command="{Binding FtpScanCommand}"
+                Icon="&#xE703;"
+                Label="FTP查找"
+                Style="{StaticResource LargeIcon}" />
+            <sctl:IconButton
                 Command="{Binding AiStepCommand}"
                 Icon="&#xEDE4;"
                 Label="AI匹配"

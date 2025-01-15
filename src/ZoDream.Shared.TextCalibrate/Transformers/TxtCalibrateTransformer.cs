@@ -1,5 +1,4 @@
 ﻿using Microsoft.International.Converters.TraditionalChineseToSimplifiedConverter;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,12 +13,20 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
     {
         const string RuleFileName = "_rules";
 
+        private readonly char[] _chatCodes = ['“', '”'];
+        private readonly char[] _endCodes = ['“', '”',  '!', '?', '.', '！', '？', '。'];
+
         /// <summary>
         /// 是否需要自动合并章节
         /// </summary>
         public bool MergeEnabled { get; private set; } = false;
 
         public bool? SimplifiedToTraditional = null;
+        /// <summary>
+        /// 只有超过多少字的才自动拆分行
+        /// </summary>
+        public int MinSplitLength = 0;
+
         public List<object> RuleItems { get; private set; } = [];
 
         public IEnumerable<string> Preprocess(IEnumerable<string> files)
@@ -70,13 +77,16 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
                 {
                     if (!MergeEnabled)
                     {
-                        sb.Append(lineTag);
+                        if (sb.Length > 0)
+                        {
+                            sb.Append(lineTag);
+                        }
                         if (lastIsContent)
                         {
                             sb.Append(lineTag);
                             sb.Append(lineTag);
                         }
-                        sb.Append(line);
+                        sb.Append(ReplaceTitle(line));
                         lastIsContent = false;
                         lastNotEnd = false;
                     }
@@ -101,26 +111,45 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
                 {
                     continue;
                 }
-                var blocks = str.Split("”“");
-                for (int j = 0; j < blocks.Length; j++)
+                if (line.Length < MinSplitLength) 
                 {
-                    var item = blocks[j];
-                    if (j > 0)
+                    if (sb.Length != 0)
                     {
-                        item = "“" + item;
+                        sb.Append(lineTag);
                     }
-                    if (j < blocks.Length - 1)
+                    sb.Append($"    {str}");
+                    lastIsContent = true;
+                    lastNotEnd = false;
+                    continue;
+                }
+                var start = 0;
+                var isInlineIndex = 0;
+                var blockIndex = 0;
+                while (start < str.Length)
+                {
+                    blockIndex ++;
+                    var beginIsChatStart = str[start] == _chatCodes[0];
+                    var end = str.IndexOfAny(beginIsChatStart ? _chatCodes : _endCodes, beginIsChatStart ? start + 1 : start);
+                    var endIsChatStart = end >= 0 && str[end] == _chatCodes[0];
+                    if (end == 0 && endIsChatStart)
                     {
-                        item += "”";
+                        if (lastNotEnd)
+                        {
+                            lastNotEnd = false;
+                            sb.Append('。');
+                        }
                     }
-                    if (lastNotEnd && item.StartsWith('“'))
+                    if (end < 0)
                     {
-                        lastNotEnd = false;
-                        sb.Append('。');
+                        end = str.Length;
+                    } else if (!endIsChatStart)
+                    {
+                        end++;
                     }
-                    if (lastNotEnd)
+                    var text = str[start..end];
+                    if (lastNotEnd || (start > 0 && IsSaySeparator(str[start - 1])) || (isInlineIndex > 0 && blockIndex - isInlineIndex < 3))
                     {
-                        sb.Append(item);
+                        sb.Append(text);
                     }
                     else
                     {
@@ -128,13 +157,24 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
                         {
                             sb.Append(lineTag);
                         }
-                        sb.Append($"    {item}");
+                        sb.Append($"    {text}");
                     }
                     lastIsContent = true;
-                    lastNotEnd = !HasEndChar(item);
+                    lastNotEnd = !HasEndChar(text);
+                    if (endIsChatStart)
+                    {
+                        isInlineIndex = lastNotEnd ? blockIndex : 0;
+                    }
+                    start = end;
                 }
             }
             return sb.ToString();
+        }
+
+
+        private string ReplaceTitle(string line)
+        {
+            return TitleWhiteSpaceRegex().Replace(line.Trim(), " ");
         }
 
         private string RemoveAnything(string line)
@@ -193,16 +233,23 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
             {
                 return true;
             }
-            return code is '.' or ',' or '，' or '：' or
-                ':' 
-                or '）'
+            if (IsSaySeparator(code))
+            {
+                return true;
+            } 
+            return code is '.' or ',' or '，' or '）'
                 or '…' or '＊' or '*' or '】' or '~';
+        }
+
+        private static bool IsSaySeparator(char code)
+        {
+            return code is '：' or ':';
         }
 
         private static bool IsEndSeparator(char code)
         {
             return code is '。'
-                or '”' or '？' or '？' or '！'
+                or '”' or '？' or '！'
                 or '?' or '!';
         }
 
@@ -258,12 +305,16 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
                             _ => null
                         };
                         break;
+                    case ">":
+                        _ = int.TryParse(line, out MinSplitLength);
+                        break;
                     default:
                         break;
                 }
             }
         }
 
-        
+        [GeneratedRegex(@"\s{2,}")]
+        private static partial Regex TitleWhiteSpaceRegex();
     }
 }

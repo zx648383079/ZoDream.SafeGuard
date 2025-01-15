@@ -11,6 +11,7 @@ using ZoDream.Shared.Finders;
 using ZoDream.Shared.Finders.Filters;
 using ZoDream.Shared.Interfaces;
 using ZoDream.Shared.Models;
+using ZoDream.Shared.Routes;
 using ZoDream.Shared.ViewModels;
 
 namespace ZoDream.SafeGuard.ViewModels
@@ -34,6 +35,7 @@ namespace ZoDream.SafeGuard.ViewModels
             DragExampleCommand = new RelayCommand(OnDragExample);
             DragMatchCommand = new RelayCommand(OnDragMatch);
             SeeFileCommand = new RelayCommand(TapSeeFile);
+            FtpScanCommand = new RelayCommand(TapFtpScan);
         }
 
         public IFilterFinder? Finder { get; private set; }
@@ -159,7 +161,7 @@ namespace ZoDream.SafeGuard.ViewModels
         public ICommand RuleStepCommand { get; private set; }
         public ICommand AiStepCommand { get; private set; }
 
-
+        public ICommand FtpScanCommand {  get; private set; }
 
         public ICommand StartCommand { get; private set; }
         public ICommand StopCommand { get; private set; }
@@ -173,6 +175,11 @@ namespace ZoDream.SafeGuard.ViewModels
         public ICommand DeleteExampleCommand { get; private set; }
         public ICommand DeleteMatchCommand { get; private set; }
         public ICommand SeeFileCommand { get; private set; }
+
+        private void TapFtpScan(object? _)
+        {
+            ShellManager.GoToAsync("explorer");
+        }
 
         private void TapSelectExample(object? _)
         {
