@@ -1,4 +1,5 @@
 ﻿using Microsoft.International.Converters.TraditionalChineseToSimplifiedConverter;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using ZoDream.Shared.Interfaces;
 using ZoDream.Shared.Storage;
+using ZoDream.Shared.TextCalibrate.Formatters;
 
 namespace ZoDream.Shared.TextCalibrate.Transformers
 {
@@ -27,7 +29,7 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
         /// </summary>
         public int MinSplitLength = 0;
 
-        public List<object> RuleItems { get; private set; } = [];
+        public List<ITextFormatter> RuleItems { get; private set; } = [];
 
         public IEnumerable<string> Preprocess(IEnumerable<string> files)
         {
@@ -185,13 +187,7 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
                 {
                     break;
                 }
-                if (item is Regex r)
-                {
-                    line = r.Replace(line, string.Empty);
-                } else if (item is string s)
-                {
-                    line = line.Replace(s, string.Empty);
-                }
+                line = item.Format(line);
             }
             return line;
         }
@@ -284,7 +280,7 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
                 }
                 if (line.IndexOf(": ") != 1)
                 {
-                    RuleItems.Add(line);
+                    RuleItems.Add(new ReplaceFormatter(line));
                     continue;
                 }
                 var tag = line[..1];
@@ -292,7 +288,26 @@ namespace ZoDream.Shared.TextCalibrate.Transformers
                 switch (tag)
                 {
                     case "$":
-                        RuleItems.Add(new Regex(line));
+                    case "|":
+                        {
+                            var args = line.Split("<=>", 2);
+                            var search = args[0];
+                            if (string.IsNullOrEmpty(search))
+                            {
+                                break;
+                            }
+                            var replacement = args.Length == 2 ? args[1] : string.Empty;
+                            try
+                            {
+                                RuleItems.Add(tag == "$" ?
+                                new RegexReplaceFormatter(new Regex(search), replacement)
+                                : new ReplaceFormatter(search, replacement));
+                            }
+                            catch (Exception)
+                            {
+                                break;
+                            }
+                        }
                         break;
                     case "@":
                         MergeEnabled = true;
